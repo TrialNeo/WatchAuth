@@ -1,0 +1,108 @@
+<template>
+  <!-- 各渠道销售表现实时榜单 -->
+  <BaseCard title="各渠道销售表现实时榜单">
+    <el-scrollbar :height="260">
+      <el-table :data="channelSales" style="width: 100%">
+        <el-table-column label="渠道名称" width="250">
+          <template #default="{ row }">
+            <div class="profile-cell">
+              <div :style="{ backgroundColor: row.color }" class="project-icon">
+                {{ row.name.charAt(0) }}
+              </div>
+              <div class="name-role">
+                <div class="name">{{ row.name }}</div>
+                <div class="role">负责人: {{ row.owner }}</div>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="销售额" min-width="150" prop="revenue">
+          <template #default="{ row }">
+            <div class="font-bold">￥{{ row.revenue }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="达成率" min-width="180">
+          <template #default="{ row }">
+            <el-progress
+              :color="row.achievement > 90 ? '#10b981' : '#5bbff9'"
+              :percentage="row.achievement"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" min-width="100" prop="status">
+          <template #default="{ row }">
+            <BaseTag :text="row.status" :type="row.statusType" effect="dark" round />
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-scrollbar>
+  </BaseCard>
+</template>
+
+<script lang="ts" setup>
+// 渠道销售数据
+const channelSales = ref([
+  {
+    name: '移动端 App',
+    owner: 'David Fan',
+    revenue: '542,800',
+    achievement: 92,
+    status: '引领增长',
+    statusType: 'success',
+    color: '#8b5cf6',
+  },
+  {
+    name: '天猫旗舰店',
+    owner: 'Alice Zhang',
+    revenue: '320,400',
+    achievement: 88,
+    status: '稳健运行',
+    statusType: 'primary',
+    color: '#ef4444',
+  },
+  {
+    name: '抖音直播间',
+    owner: 'Mike Lee',
+    revenue: '281,000',
+    achievement: 100,
+    status: '爆发期',
+    statusType: 'warning',
+    color: '#f59e0b',
+  },
+  {
+    name: '京东商城',
+    owner: 'Lisa Wang',
+    revenue: '240,000',
+    achievement: 80,
+    status: '新店开张',
+    statusType: 'info',
+    color: '#3b82f6',
+  },
+])
+</script>
+
+<style lang="scss" scoped>
+.profile-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  .project-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+  .name {
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+  }
+  .role {
+    font-size: 12px;
+    color: var(--el-text-color-secondary);
+  }
+}
+</style>
