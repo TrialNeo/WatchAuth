@@ -10,7 +10,7 @@ export const APP_CONFIG = {
   listenMSWPath: '/DFAN-admin-api',
 
   // 项目名称
-  name: 'DFAN Admin',
+  name: 'WatchAuth',
 
   // Favicon src - 根据环境动态设置 base path
   faviconSrc: `${import.meta.env.VITE_STATIC_URL}favicon.ico`,

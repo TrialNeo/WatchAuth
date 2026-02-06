@@ -68,9 +68,9 @@
 </template>
 
 <script lang="ts" setup>
-import { menuPage } from '@/api/menu'
-import { TABLE_CONFIG } from '@/config/elementConfig'
-import type { IMenuItem } from '@/types/system/menu'
+import {menuPage} from '@/api/menu'
+import {TABLE_CONFIG} from '@/config/elementConfig'
+import type {IMenuItem} from '@/types/system/menu'
 
 const menuStore = useMenuStore()
 const userStore = useUserStore()
@@ -112,7 +112,7 @@ const getMenuList = async () => {
   loading.value = true
   try {
     const { data: res } = await menuPage()
-    if (res.code !== 200) return
+    if (res.code !== 0) return
     menuList.value = res.data || []
   } finally {
     loading.value = false

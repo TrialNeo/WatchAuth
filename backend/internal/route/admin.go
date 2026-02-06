@@ -16,12 +16,14 @@ func bindAdminRoute(admin fiber.Router) {
 	)
 	admin.Post("/admin/login", adminCtrl.Login)
 	admin.Use(auth.MiddlewareAuth()).Route("/admin", func(router fiber.Router) {
-
 		// 这是授权之后的使用hh
-		router.Get("/hello", func(c *fiber.Ctx) error {
-			return c.JSON(fiber.Map{
-				"hello": "world",
-			})
+		router.Get("/permissions", adminCtrl.Permissions)
+		router.Route("/app", func(router fiber.Router) {
+			router.Get("/list", adminCtrl.GetAppList)
+			router.Post("/create", adminCtrl.CreateApp)
+			router.Post("/delete", adminCtrl.DeleteApp)
+			router.Post("/info", adminCtrl.AppInfo)
 		})
 	})
+
 }

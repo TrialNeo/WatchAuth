@@ -1,30 +1,31 @@
 <template>
   <div>
     <el-card class="card-clear-mb" shadow="never">
-      <el-form ref="queryFormRef" :model="queryForm" label-width="auto" @keyup.enter="getUserList">
+      <el-form ref="queryFormRef" :model="queryForm" label-width="auto" @keyup.enter="getRoleList">
         <el-row :gutter="10">
           <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="queryForm.username" placeholder="请输入" />
+            <el-form-item label="应用名称" prop="name">
+              <el-input v-model="queryForm.name" placeholder="请输入"/>
             </el-form-item>
           </el-col>
           <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="queryForm.name" placeholder="请输入" />
+            <el-form-item label="应用ID" prop="code">
+              <el-input v-model="queryForm.code" placeholder="请输入"/>
             </el-form-item>
           </el-col>
           <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
             <el-form-item label="状态" prop="status">
               <el-select v-model="queryForm.status" placeholder="请选择">
-                <el-option label="启用" value="active" />
-                <el-option label="禁用" value="inactive" />
+                <el-option :value="1" label="启用"/>
+                <el-option :value="0" label="禁用"/>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
             <el-form-item>
-              <el-button :icon="menuStore.iconComponents.Search" type="primary" @click="getUserList"
-                >搜索</el-button
+              <el-button :icon="menuStore.iconComponents.Search" type="primary" @click="getRoleList"
+              >搜索
+              </el-button
               >
               <el-button :icon="menuStore.iconComponents.Refresh" @click="reset">重置</el-button>
             </el-form-item>
@@ -35,22 +36,22 @@
     <el-card class="card-mt-16" shadow="never">
       <div class="operation-container">
         <el-button
-          v-permission="['user:add']"
+          v-permission="['role:add']"
           :icon="menuStore.iconComponents.Plus"
           type="primary"
-          @click="userCreateRef?.showDialog(undefined)"
-          >新增用户</el-button
-        >
+          @click="appCreateRef?.showDialog(undefined)"
+        >新增应用
+        </el-button>
         <el-popconfirm
           :placement="POPCONFIRM_CONFIG.placement"
           :width="POPCONFIRM_CONFIG.width"
-          title="确定要删除选中的用户吗？"
-          @confirm="deleteUserHandle(deleteUserIds)"
+          title="确定要删除选中的应用吗？"
+          @confirm="deleteAppHandle(deleteAppIDs)"
         >
           <template #reference>
             <el-button
               :disabled="
-                !useButtonPermission(['user:delete'], [() => !!deleteUserIds.length]).value
+                !useButtonPermission(['role:delete'], [() => !!deleteAppIDs.length]).value
               "
               :icon="menuStore.iconComponents.Delete"
               type="danger"
@@ -62,77 +63,108 @@
       </div>
       <el-table
         :border="TABLE_CONFIG.border"
-        :data="userList"
+        :data="appList"
         show-overflow-tooltip
         @selection-change="tableSelectionChange"
         @sort-change="tableSortChange"
       >
-        <el-table-column :align="TABLE_CONFIG.align" type="selection" width="55" />
-        <el-table-column :align="TABLE_CONFIG.align" fixed label="序号" type="index" width="55" />
+        <el-table-column :align="TABLE_CONFIG.align" type="selection" width="55"/>
+        <el-table-column :align="TABLE_CONFIG.align" fixed label="序号" type="index" width="55"/>
         <el-table-column
           :align="TABLE_CONFIG.align"
           fixed
-          label="用户名"
-          min-width="160"
-          prop="username"
+          label="appid"
+          min-width="100"
+          prop="appId"
         />
-        <el-table-column :align="TABLE_CONFIG.align" label="姓名" min-width="120" prop="name" />
-        <el-table-column :align="TABLE_CONFIG.align" label="手机号" min-width="120" prop="phone" />
-        <el-table-column :align="TABLE_CONFIG.align" label="邮箱" min-width="180" prop="email" />
-        <el-table-column :align="TABLE_CONFIG.align" label="角色" min-width="150" prop="roleId">
+        <el-table-column
+          :align="TABLE_CONFIG.align"
+          fixed
+          label="应用名称"
+          min-width="130"
+          prop="appName"
+        />
+        <el-table-column
+          :align="TABLE_CONFIG.align"
+          label="应用描述"
+          min-width="200"
+          prop="description"
+        />
+        <el-table-column
+          :align="TABLE_CONFIG.align"
+          label="版本"
+          min-width="75"
+          prop="version"
+        />
+        <el-table-column :align="TABLE_CONFIG.align" label="计费类型" min-width="90"
+                         prop="payType">
           <template #default="{ row }">
-            <BaseTag v-if="row.roleId" :text="getRoleName(row.roleId)" />
-            <span v-else>-</span>
-          </template>
-        </el-table-column>
-        <el-table-column :align="TABLE_CONFIG.align" label="类型" prop="isBuiltIn">
-          <template #default="{ row }">
-            <BaseTag v-if="row.isBuiltIn" text="内置" type="warning" />
-            <BaseTag v-else text="自定义" type="success" />
+            <BaseTag
+              :text="feeTypeMap[row.feeType as keyof typeof feeTypeMap]?.text ?? '未知'"
+              :type="feeTypeMap[row.feeType as keyof typeof feeTypeMap]?.type ?? 'danger'"
+            />
           </template>
         </el-table-column>
         <el-table-column :align="TABLE_CONFIG.align" label="状态" prop="status">
           <template #default="{ row }">
             <BaseTag
-              v-if="row.status === 'active'"
-              :text="row.status === 'active' ? '启用' : '禁用'"
-              :type="row.status === 'active' ? 'success' : 'danger'"
+              :text="row.status ? '启用' : '禁用'"
+              :type="row.status ? 'success' : 'danger'"
             />
           </template>
         </el-table-column>
         <el-table-column
           :align="TABLE_CONFIG.align"
+          label="加密方式"
+          min-width="180"
+          prop="enctype">
+          <template #default="{ row }">
+            <BaseTag
+              :text="encTypeMap[row.feeType as keyof typeof feeTypeMap]?.text ?? '未知'"
+              :type="encTypeMap[row.feeType as keyof typeof feeTypeMap]?.type ?? 'danger'"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column
+          :align="TABLE_CONFIG.align"
+          label="SecretKeys"
+          min-width="180"
+          prop="secretKeys"
+        />
+        <el-table-column
+          :align="TABLE_CONFIG.align"
           label="创建时间"
           min-width="180"
-          prop="createTime"
+          prop="createdAt"
           sortable="custom"
         />
         <el-table-column
           :align="TABLE_CONFIG.align"
           label="更新时间"
           min-width="180"
-          prop="updateTime"
+          prop="updatedAt"
         />
-        <el-table-column :align="TABLE_CONFIG.align" fixed="right" label="操作" width="150">
-          <template #default="{ row }: { row: IUserItem }">
+
+        <el-table-column :align="TABLE_CONFIG.align" fixed="right" label="操作" min-width="130">
+          <template #default="{ row }: { row: IAppItem }">
             <el-button
-              v-permission="['user:edit']"
+              v-permission="['role:edit']"
               :icon="menuStore.iconComponents.Edit"
               link
               type="primary"
-              @click="userCreateRef?.showDialog(row.id)"
+              @click="appCreateRef?.showDialog(row.appId)"
             >
               编辑
             </el-button>
             <el-popconfirm
               :placement="POPCONFIRM_CONFIG.placement"
               :width="POPCONFIRM_CONFIG.width"
-              title="确定要删除选中的用户吗？"
-              @confirm="deleteUserHandle([row.id])"
+              title="确定要删除选中的应用吗？"
+              @confirm="deleteAppHandle([row.appId])"
             >
               <template #reference>
                 <el-button
-                  v-permission="['user:delete']"
+                  v-permission="['role:delete']"
                   :icon="menuStore.iconComponents.Delete"
                   link
                   type="danger"
@@ -159,47 +191,55 @@
               : PAGINATION_CONFIG.desktopPagerCount
           "
           :total="pagination.total"
-          @change="getUserList"
+          @change="getRoleList"
         />
       </div>
     </el-card>
 
-    <UserCreate ref="userCreateRef" @refresh="refresh" />
+    <AppCreate ref="appCreateRef" @refresh="refresh"/>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {deleteUser, userPage} from '@/api/user'
-import {rolePage} from '@/api/role'
+import {appPage, deleteApp} from '@/api/app.ts'
 import {useButtonPermission} from '@/composables/useButtonPermission'
 import {PAGINATION_CONFIG, POPCONFIRM_CONFIG, TABLE_CONFIG} from '@/config/elementConfig'
-import UserCreate from '@/views/system/user/create.vue'
-import type {IUserItem} from '@/types/system/user'
-import type {IRoleItem} from '@/types/system/role'
+import AppCreate from '@/views/app/app/create.vue'
+import type {IAppItem} from '@/types/app/app.ts'
 import type {FormInstance} from 'element-plus'
 
-defineOptions({ name: 'UserView' })
+defineOptions({name: 'AppView'})
 
 const menuStore = useMenuStore()
 const queryFormRef = useTemplateRef<FormInstance>('queryFormRef')
-const userCreateRef = useTemplateRef<InstanceType<typeof UserCreate> | null>('userCreateRef')
+const appCreateRef = ref<InstanceType<typeof AppCreate> | null>(null)
 
-// 删除用户的ids
-const deleteUserIds = ref<string[]>([])
+// 计费方式map
+const feeTypeMap = {
+  0: {text: '免费', type: 'success' as const},
+  1: {text: '时间', type: 'warning' as const},
+  2: {text: '次数', type: 'info' as const}
+}
 
-// 角色列表（用于显示角色名称）
-const roleList = ref<IRoleItem[]>([])
+const encTypeMap = {
+  0: {text: 'None', type: '' as const},
+  1: {text: 'RSA', type: '' as const},
+  2: {text: 'AesGcm', type: '' as const}
+}
+
+// 删除角色的ids
+const deleteAppIDs   = ref<string[]>([])
 
 // 查询表单
 const queryForm = ref({
-  username: '',
   name: '',
+  code: '',
   status: undefined,
   sortOrder: 'desc' as 'asc' | 'desc',
 })
 
-// 用户列表
-const userList = ref<IUserItem[]>([])
+// 角色列表
+const appList = ref<IAppItem[]>([])
 
 // 分页
 const pagination = ref({
@@ -208,61 +248,42 @@ const pagination = ref({
   total: 0,
 })
 
-// 获取角色名称
-const getRoleName = (roleId: string): string => {
-  const role = roleList.value.find((r) => r.id === roleId)
-  return role?.name || roleId
+// 重置查询表单
+const reset = () => {
+  queryFormRef.value?.resetFields()
+  getRoleList()
 }
 
 // 获取角色列表
 const getRoleList = async () => {
-  const { data: res } = await rolePage({
-    page: 1,
-    pageSize: 1000, // 获取所有角色
-    name: '',
-    code: '',
-    sortOrder: 'asc',
-  })
-  if (res.code !== 0) return
-  roleList.value = res.data?.list || []
-}
-
-// 重置查询表单
-const reset = () => {
-  queryFormRef.value?.resetFields()
-  getUserList()
-}
-
-// 获取用户列表
-const getUserList = async () => {
   const params = {
     ...queryForm.value,
     page: pagination.value.page,
     pageSize: pagination.value.pageSize,
   }
-  const { data: res } = await userPage(params)
-  if (res.code !== 200) return
-  userList.value = res.data?.list || []
+  const {data: res} = await appPage(params)
+  if (res.code !== 0) return
+  appList.value = res.data?.apps || []
   pagination.value.total = res.data?.total || 0
 }
 
 // 表格选择变化
-const tableSelectionChange = (selection: IUserItem[]) => {
-  deleteUserIds.value = selection.map((item) => item.id)
+const tableSelectionChange = (selection: IAppItem[]) => {
+  deleteAppIDs.value = selection.map((item) => item.appId)
 }
 
 // 表格排序变化
-const tableSortChange = ({ order }: { order: 'ascending' | 'descending' | null }) => {
+const tableSortChange = ({order}: { order: 'ascending' | 'descending' | null }) => {
   queryForm.value.sortOrder = order === 'ascending' ? 'asc' : 'desc'
-  getUserList()
+  getRoleList()
 }
 
-// 删除用户
-const deleteUserHandle = async (ids: string[]) => {
-  const { data: res } = await deleteUser(ids)
-  if (res.code !== 200) return
+// 删除角色
+const deleteAppHandle = async (names: string[]) => {
+  const {data: res} = await deleteApp(names)
+  if (res.code !== 0) return
   ElMessage.success('删除成功')
-  getUserList()
+  getRoleList()
 }
 
 // 刷新
@@ -275,12 +296,11 @@ const refresh = (type: 'create' | 'update') => {
       pagination.value.pageSize,
     )
   }
-  getUserList()
+  getRoleList()
 }
 
 onMounted(() => {
   getRoleList()
-  getUserList()
 })
 </script>
 

@@ -168,12 +168,12 @@
 </template>
 
 <script lang="ts" setup>
-import { rolePage, deleteRole } from '@/api/role'
-import { useButtonPermission } from '@/composables/useButtonPermission'
-import { PAGINATION_CONFIG, POPCONFIRM_CONFIG, TABLE_CONFIG } from '@/config/elementConfig'
+import {deleteRole, rolePage} from '@/api/role'
+import {useButtonPermission} from '@/composables/useButtonPermission'
+import {PAGINATION_CONFIG, POPCONFIRM_CONFIG, TABLE_CONFIG} from '@/config/elementConfig'
 import RoleCreate from '@/views/system/role/create.vue'
-import type { IRoleItem } from '@/types/system/role'
-import type { FormInstance } from 'element-plus'
+import type {IRoleItem} from '@/types/system/role'
+import type {FormInstance} from 'element-plus'
 
 defineOptions({ name: 'RoleView' })
 
@@ -216,7 +216,7 @@ const getRoleList = async () => {
     pageSize: pagination.value.pageSize,
   }
   const { data: res } = await rolePage(params)
-  if (res.code !== 200) return
+  if (res.code !== 0) return
   roleList.value = res.data?.list || []
   pagination.value.total = res.data?.total || 0
 }
@@ -235,7 +235,7 @@ const tableSortChange = ({ order }: { order: 'ascending' | 'descending' | null }
 // 删除角色
 const deleteRoleHandle = async (ids: string[]) => {
   const { data: res } = await deleteRole(ids)
-  if (res.code !== 200) return
+  if (res.code !== 0) return
   ElMessage.success('删除成功')
   getRoleList()
 }

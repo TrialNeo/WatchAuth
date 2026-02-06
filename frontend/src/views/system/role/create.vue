@@ -1,7 +1,7 @@
 <template>
   <BaseDialog
     v-model="open"
-    :title="submitForm.id ? '编辑角色' : '新增角色'"
+    :title="submitForm.appID ? '编辑角色' : '新增角色'"
     style="height: 60vh"
     width="600"
     @close="close"
@@ -20,7 +20,7 @@
         <el-form-item label="角色编码" prop="code">
           <el-input
             v-model="submitForm.code"
-            :disabled="!!submitForm.id"
+            :disabled="!!submitForm.appID"
             placeholder="请输入角色编码"
           />
         </el-form-item>
@@ -61,10 +61,10 @@
 </template>
 
 <script lang="ts" setup>
-import { createRole, roleInfo, updateRole } from '@/api/role'
-import { menuPage } from '@/api/menu'
-import { type FormInstance, type FormRules, type ElTree } from 'element-plus'
-import type { IMenuItem } from '@/types/system/menu'
+import {createRole, roleInfo, updateRole} from '@/api/role'
+import {menuPage} from '@/api/menu'
+import {type ElTree, type FormInstance, type FormRules} from 'element-plus'
+import type {IMenuItem} from '@/types/system/menu'
 
 defineOptions({ name: 'RoleCreate' })
 
@@ -84,7 +84,7 @@ const menuList = ref<IMenuItem[]>([])
 
 // 表单数据
 const submitForm = ref({
-  id: undefined as string | undefined,
+  appID: undefined as string | undefined,
   name: '',
   code: '',
   description: '',
@@ -104,28 +104,28 @@ const close = () => {
 // 确定
 const confirm = async () => {
   await submitFormRef.value?.validate()
-  const { data: res } = submitForm.value.id
+  const { data: res } = submitForm.value.appID
     ? await updateRole(submitForm.value)
     : await createRole(submitForm.value)
-  if (res.code !== 200) return
-  ElMessage.success(submitForm.value.id ? '编辑成功' : '新增成功')
-  emits('refresh', submitForm.value.id ? 'update' : 'create')
+  if (res.code !== 0) return
+  ElMessage.success(submitForm.value.appID ? '编辑成功' : '新增成功')
+  emits('refresh', submitForm.value.appID ? 'update' : 'create')
   close()
 }
 
 // 获取菜单列表
 const getMenuList = async () => {
   const { data: res } = await menuPage()
-  if (res.code !== 200) return
+  if (res.code !== 0) return
   menuList.value = res.data || []
 }
 
 // 获取角色信息
 const getRoleInfo = async () => {
-  const { data: res } = await roleInfo(submitForm.value.id as string)
-  if (res.code !== 200) return
+  const { data: res } = await roleInfo(submitForm.value.appID as string)
+  if (res.code !== 0) return
   const { id, name, code, description, status, menuIds } = res.data
-  submitForm.value = { id, name, code, description, status, menuIds: menuIds || [] }
+  submitForm.value = { appID: id, name, code, description, status, menuIds: menuIds || [] }
 
   // 等待菜单列表和 DOM 都更新后设置选中的菜单
   await nextTick()
@@ -160,7 +160,7 @@ const formRules: FormRules = {
 
 // 显示对话框
 const showDialog = async (id: string | undefined) => {
-  submitForm.value.id = id
+  submitForm.value.appID = id
   submitForm.value.menuIds = []
   open.value = true
   // 加载菜单列表

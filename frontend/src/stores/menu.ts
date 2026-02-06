@@ -1,10 +1,10 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 import * as ElIcons from '@element-plus/icons-vue'
 import * as HeroOutlineIcons from '@heroicons/vue/24/outline'
 import * as HeroSolidIcons from '@heroicons/vue/24/solid'
-import { useWindowSize } from '@vueuse/core'
-import { userPermissions } from '@/api/login'
-import type { IMenuItem } from '@/types/system/menu'
+import {useWindowSize} from '@vueuse/core'
+import {userPermissions} from '@/api/login'
+import type {IMenuItem} from '@/types/system/menu'
 
 export const useMenuStore = defineStore('menu', () => {
   // el-icon 图标映射
@@ -66,7 +66,7 @@ export const useMenuStore = defineStore('menu', () => {
   // 获取用户权限
   const getUserPermissions = async () => {
     const { data: res } = await userPermissions()
-    if (res.code !== 200) return
+    if (res.code !== 0) return
     menuList.value = res.data.menus
     buttonPermissions.value = res.data.buttonPermissions
     hasLoadedPermissions.value = true

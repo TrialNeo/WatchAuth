@@ -43,9 +43,9 @@
               <TransitionGroup v-else name="group-slide-right" tag="div">
                 <div
                   v-for="message in unreadMessageList"
-                  :key="message.id"
+                  :key="message.appID"
                   class="notification-item"
-                  @click="userStore.markAsRead(message.id)"
+                  @click="userStore.markAsRead(message.appID)"
                 >
                   <el-avatar :size="32" :src="message.avatar" />
                   <div class="message-content">
@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ElDropdown } from 'element-plus'
+import type {ElDropdown} from 'element-plus'
 
 const router = useRouter()
 const userStore = useUserStore()

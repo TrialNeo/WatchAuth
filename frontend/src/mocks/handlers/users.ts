@@ -1,25 +1,25 @@
 /**
  * 用户相关的 MSW Handlers
  */
-import { http, HttpResponse } from 'msw'
-import { APP_CONFIG } from '@/config/app.config'
+import {http, HttpResponse} from 'msw'
+import {APP_CONFIG} from '@/config/app.config'
 import dayjs from 'dayjs'
 import {
-  getAll,
   add,
-  update,
-  remove,
-  getById,
-  STORES,
-  getUserById,
-  usernameExists,
   buildMenuTree,
+  getAll,
+  getById,
   getMenuAncestors,
-  type User,
-  type Role,
+  getUserById,
   type Menu,
+  remove,
+  type Role,
+  STORES,
+  update,
+  type User,
+  usernameExists,
 } from '../db/index'
-import { verifyAuth } from './utils'
+import {verifyAuth} from './utils'
 
 const MSW_BASE = APP_CONFIG.listenMSWPath
 
@@ -201,7 +201,7 @@ export const createUserHandler = http.post(`${MSW_BASE}/users`, async ({ request
     // 创建用户
     const now = dayjs().format('YYYY-MM-DD HH:mm:ss')
     const newUser: User = {
-      id: `user_${Date.now()}`,
+      appID: `user_${Date.now()}`,
       username,
       password,
       name,

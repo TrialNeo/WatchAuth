@@ -1,6 +1,6 @@
 // 用户管理类型文件
-import type { ICommonResponse } from '@/types/common'
-import type { ILoginLogParams } from '@/types/login'
+import type {ICommonResponse} from '@/types/common'
+import type {ILoginLogParams} from '@/types/login'
 
 // 用户列表项
 export interface IUserItem {
@@ -59,7 +59,7 @@ export type MessageType = 'system' | 'user' | 'todo'
 
 // 用户消息列表项
 export interface IUserMessageItem {
-  id: string
+  appID: string
   title: string
   content: string
   type: MessageType

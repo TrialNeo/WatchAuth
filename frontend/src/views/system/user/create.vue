@@ -1,7 +1,7 @@
 <template>
   <BaseDialog
     v-model="open"
-    :title="submitForm.id ? '编辑用户' : '新增用户'"
+    :title="submitForm.appID ? '编辑用户' : '新增用户'"
     width="600"
     @close="close"
   >
@@ -15,7 +15,7 @@
       <el-form-item label="用户名" prop="username">
         <el-input
           v-model="submitForm.username"
-          :disabled="!!submitForm.id"
+          :disabled="!!submitForm.appID"
           placeholder="请输入用户名（不允许中文）"
         />
       </el-form-item>
@@ -57,10 +57,10 @@
 </template>
 
 <script lang="ts" setup>
-import { rolePage } from '@/api/role'
-import { createUser, userInfo, updateUser } from '@/api/user'
-import type { IRoleItem } from '@/types/system/role'
-import { type FormInstance, type FormRules } from 'element-plus'
+import {rolePage} from '@/api/role'
+import {createUser, updateUser, userInfo} from '@/api/user'
+import type {IRoleItem} from '@/types/system/role'
+import {type FormInstance, type FormRules} from 'element-plus'
 
 defineOptions({ name: 'UserCreate' })
 
@@ -79,7 +79,7 @@ const roleList = ref<IRoleItem[]>([])
 
 // 表单数据
 const submitForm = ref({
-  id: undefined as string | undefined,
+  appID: undefined as string | undefined,
   username: '',
   password: '',
   name: '',
@@ -101,12 +101,12 @@ const close = () => {
 const confirm = async () => {
   await submitFormRef.value?.validate()
 
-  const { data: res } = submitForm.value.id
+  const { data: res } = submitForm.value.appID
     ? await updateUser(submitForm.value)
     : await createUser(submitForm.value)
-  if (res.code !== 200) return
-  ElMessage.success(submitForm.value.id ? '编辑成功' : '新增成功')
-  emits('refresh', submitForm.value.id ? 'update' : 'create')
+  if (res.code !== 0) return
+  ElMessage.success(submitForm.value.appID ? '编辑成功' : '新增成功')
+  emits('refresh', submitForm.value.appID ? 'update' : 'create')
   close()
 }
 
@@ -125,11 +125,11 @@ const getRoleList = async () => {
 
 // 获取用户信息
 const getUserInfo = async () => {
-  const { data: res } = await userInfo(submitForm.value.id as string)
+  const { data: res } = await userInfo(submitForm.value.appID as string)
   if (res.code !== 200) return
   const { id, username, name, phone, email, roleId, status, password } = res.data
   submitForm.value = {
-    id,
+    appID: id,
     username,
     password,
     name: name || '',
@@ -157,7 +157,7 @@ const formRules: FormRules = {
       trigger: 'blur',
       validator: (rule, value, callback) => {
         // 新增时必填，编辑时可选
-        if (!submitForm.value.id && !value) {
+        if (!submitForm.value.appID && !value) {
           callback(new Error('请输入密码'))
         } else {
           callback()
@@ -170,7 +170,7 @@ const formRules: FormRules = {
 
 // 显示对话框
 const showDialog = async (id: string | undefined) => {
-  submitForm.value.id = id
+  submitForm.value.appID = id
   open.value = true
   // 加载角色列表
   await getRoleList()

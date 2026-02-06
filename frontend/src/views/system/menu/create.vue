@@ -1,7 +1,7 @@
 <template>
   <BaseDialog
     v-model="open"
-    :title="submitForm.id ? '编辑菜单' : '新增菜单'"
+    :title="submitForm.appID ? '编辑菜单' : '新增菜单'"
     width="600"
     @close="close"
   >
@@ -76,10 +76,10 @@
 </template>
 
 <script lang="ts" setup>
-import { menuPage, createMenu, updateMenu, menuInfo } from '@/api/menu'
+import {createMenu, menuInfo, menuPage, updateMenu} from '@/api/menu'
 import IconSelectorDialog from '@/components/dialog/IconSelectorDialog.vue'
-import type { FormInstance, FormRules } from 'element-plus'
-import type { IMenuItem, IMenuType } from '@/types/system/menu'
+import type {FormInstance, FormRules} from 'element-plus'
+import type {IMenuItem, IMenuType} from '@/types/system/menu'
 
 defineOptions({ name: 'MenuCreate' })
 
@@ -102,7 +102,7 @@ const titleLabel = computed(() => {
 })
 
 const submitForm = ref({
-  id: undefined as string | undefined,
+  appID: undefined as string | undefined,
   type: 'directory' as IMenuType,
   title: '',
   path: '',
@@ -119,7 +119,7 @@ const close = () => {
   submitLoading.value = false
   menuList.value = []
   submitForm.value = {
-    id: undefined,
+    appID: undefined,
     type: 'directory',
     title: '',
     path: '',
@@ -136,12 +136,12 @@ const confirm = async () => {
   submitLoading.value = true
 
   try {
-    const { data: res } = submitForm.value.id
+    const { data: res } = submitForm.value.appID
       ? await updateMenu(submitForm.value)
       : await createMenu(submitForm.value)
 
-    if (res.code !== 200) return
-    ElMessage.success(submitForm.value.id ? '编辑成功' : '新增成功')
+    if (res.code !== 0) return
+    ElMessage.success(submitForm.value.appID ? '编辑成功' : '新增成功')
     emits('refresh')
     close()
   } finally {
@@ -163,16 +163,16 @@ const getSelectIcon = (iconName: string) => {
 
 // 获取菜单详情
 const getMenuInfo = async () => {
-  const { data: res } = await menuInfo(submitForm.value.id as string)
+  const { data: res } = await menuInfo(submitForm.value.appID as string)
   if (res.code !== 200) return
   const { id, type, title, path, icon, parentId, order, status, permission } = res.data
-  submitForm.value = { id, type, title, path, icon, parentId, order, status, permission }
+  submitForm.value = { appID: id, type, title, path, icon, parentId, order, status, permission }
 }
 
 // 显示对话框
 const showDialog = (id: string | undefined) => {
   getMenuList()
-  submitForm.value.id = id
+  submitForm.value.appID = id
   if (id) getMenuInfo()
   open.value = true
 }

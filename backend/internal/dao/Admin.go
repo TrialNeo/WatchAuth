@@ -13,3 +13,19 @@ type Admin struct {
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 }
+
+type App struct {
+	ID         uint      `gorm:"primaryKey;autoIncrement" json:"id"`
+	AppID      string    `gorm:"type:varchar(36);uniqueIndex;not null" json:"appId"`
+	AppName    string    `gorm:"type:text;uniqueIndex';not null" json:"appName"`
+	Desc       string    `gorm:"type:text;not null" json:"desc"`
+	Version    string    `gorm:"type:text;not null" json:"version"`
+	FeeType    uint8     `gorm:"not null" json:"feeType"`
+	Status     uint8     `gorm:"not null" json:"status"`
+	Fee        float64   `gorm:"not null" json:"fee"`
+	EncType    uint8     `gorm:"not null" json:"encType"`
+	SecretKeys string    `gorm:"type:text;" json:"secret"`
+	CreatedAt  time.Time `json:"createdAt"`
+	UpdatedAt  time.Time `json:"updatedAt"`
+	DeletedAt  time.Time `json:"deletedAt,omitempty"` // GORM 软删除字段
+}

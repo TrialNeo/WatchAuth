@@ -93,10 +93,9 @@
 </template>
 
 <script lang="ts" setup>
-import platform from 'platform'
-import {addLoginLog, login} from '@/api/login'
+import {login} from '@/api/login'
 import type {FormInstance, FormRules} from 'element-plus'
-import {dayjs, ElMessage} from 'element-plus'
+import {ElMessage} from 'element-plus'
 import type {ILoginMode} from '@/types/login'
 
 interface IEmits {
@@ -168,19 +167,6 @@ const handleRememberChange = (value: boolean | string | number) => {
  * 使用 https://ipapi.co/json/ 获取ip 地理位置信息
  * 使用 platform 获取浏览器信息
  */
-const handleAddLoginLog = async () => {
-  const ipRes = await fetch('https://ipapi.co/json/').then((res) => res.json())
-
-  const logData = {
-    device: platform.os?.toString() || '未知',
-    browser: `${platform.name || '未知'} ${platform.version || '未知'}`,
-    ip: ipRes.ip || '未知',
-    location: [ipRes.country_name, ipRes.region, ipRes.city],
-    time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-    status: 'success',
-  }
-
-}
 
 // 登录
 const handleLogin = async () => {
@@ -199,7 +185,6 @@ const handleLogin = async () => {
       localStorage.removeItem(REMEMBER_USERNAME_KEY)
     }
     // 添加登录日志
-    await handleAddLoginLog()
     router.push('/')
 
   } finally {

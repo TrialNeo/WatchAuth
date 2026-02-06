@@ -1,20 +1,20 @@
-import { defineStore } from 'pinia'
-import { userInfoRequest } from '@/api/login'
-import { rolePage } from '@/api/role'
-import { updateProfile, updatePasswordRequest, updateAvatarRequest, deleteUser } from '@/api/user'
-import { ElMessage } from 'element-plus'
-import router, { resetRouter } from '@/router'
-import { useMenuStore } from './menu'
-import { useTabsStore } from './tabs'
+import {defineStore} from 'pinia'
+import {userInfoRequest} from '@/api/login'
+import {rolePage} from '@/api/role'
+import {deleteUser, updateAvatarRequest, updatePasswordRequest, updateProfile} from '@/api/user'
+import {ElMessage} from 'element-plus'
+import router, {resetRouter} from '@/router'
+import {useMenuStore} from './menu'
+import {useTabsStore} from './tabs'
 import defaultAvatarSvg from '@/assets/defaultAvatar.svg'
 import defaultSystemAvatar from '@/assets/images/defaultSystemAvatar.svg'
-import type { IRoleItem } from '@/types/system/role'
-import type { ICurrentTab, ITabsMenuData } from '@/types/profile'
+import type {IRoleItem} from '@/types/system/role'
+import type {ICurrentTab, ITabsMenuData} from '@/types/profile'
 import type {
+  IUpdatePasswordParams,
+  IUpdateUserProfileParams,
   IUserItem,
   IUserMessageItem,
-  IUpdateUserProfileParams,
-  IUpdatePasswordParams,
 } from '@/types/system/user'
 import dayjs from 'dayjs'
 
@@ -42,7 +42,7 @@ export const useUserStore = defineStore('user', () => {
   // 获取用户信息
   const getUserInfo = async () => {
     const { data: res } = await userInfoRequest()
-    if (res.code !== 200) return
+    if (res.code !== 0) return
     userInfo.value = res.data
     userInfo.value.bio = userInfo.value.bio || '这个人很懒，什么都没留下~'
     if (!userInfo.value?.avatar) {
@@ -245,7 +245,7 @@ export const useUserStore = defineStore('user', () => {
   // 发送消息
   const sendMessage = (message: string) => {
     userMessages.value.unshift({
-      id: String(userMessages.value.length + 1),
+      appID: String(userMessages.value.length + 1),
       title: userInfo.value?.name || userInfo.value?.username || '未知用户',
       content: message,
       type: 'user',
@@ -262,13 +262,13 @@ export const useUserStore = defineStore('user', () => {
 
   // 标记消息为已读
   const markAsRead = (id: string) => {
-    const message = userMessages.value.find((msg) => msg.id === id)
+    const message = userMessages.value.find((msg) => msg.appID === id)
     if (message) message.read = true
   }
 
   // 删除消息
   const deleteMessage = (id: string) => {
-    const index = userMessages.value.findIndex((msg) => msg.id === id)
+    const index = userMessages.value.findIndex((msg) => msg.appID === id)
     if (index !== -1) userMessages.value.splice(index, 1)
   }
 

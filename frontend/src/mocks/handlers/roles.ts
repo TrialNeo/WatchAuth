@@ -1,20 +1,11 @@
 /**
  * 角色相关的 MSW Handlers
  */
-import { http, HttpResponse } from 'msw'
-import { APP_CONFIG } from '@/config/app.config'
+import {http, HttpResponse} from 'msw'
+import {APP_CONFIG} from '@/config/app.config'
 import dayjs from 'dayjs'
-import {
-  getAll,
-  getById,
-  add,
-  update,
-  remove,
-  STORES,
-  roleCodeExists,
-  type Role,
-} from '../db/index'
-import { verifyAuth } from './utils'
+import {add, getAll, getById, remove, type Role, roleCodeExists, STORES, update,} from '../db/index'
+import {verifyAuth} from './utils'
 
 const MSW_BASE = APP_CONFIG.listenMSWPath
 
@@ -177,7 +168,7 @@ export const createRoleHandler = http.post(`${MSW_BASE}/roles`, async ({ request
     // 创建角色
     const now = dayjs().format('YYYY-MM-DD HH:mm:ss')
     const newRole: Role = {
-      id: `role_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+      appID: `role_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
       name,
       code,
       description,

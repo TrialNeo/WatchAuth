@@ -10,7 +10,7 @@
         <div class="grid grid-cols-[repeat(auto-fill,minmax(45px,1fr))] gap-2.5">
           <div
             v-for="item in nodes"
-            :key="item.id"
+            :key="item.appID"
             :class="[
               item.status === 'success' && 'bg-(--el-color-success)',
               item.status === 'warning' && 'bg-(--el-color-warning)',
@@ -45,7 +45,7 @@
 type NodeStatus = 'success' | 'warning' | 'danger'
 
 interface INodeItem {
-  id: number
+  appID: number
   status: NodeStatus
 }
 
@@ -69,7 +69,7 @@ const generateNodes = () => {
     let status: NodeStatus = 'success'
     if (rand > 0.85) status = 'warning' // 约 10%
     if (rand > 0.95) status = 'danger' // 约 5%
-    return { id: i, status }
+    return { appID: i, status }
   })
 }
 

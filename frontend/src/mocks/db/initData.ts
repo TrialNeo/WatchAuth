@@ -2,19 +2,19 @@
  * 初始化 IndexedDB 默认数据
  */
 import {
-  addUser,
-  userExists,
-  STORES,
-  type User,
   add,
+  addUser,
+  ensureDBInitialized,
   getAll,
-  update,
-  type Role,
   type Menu,
   type MenuType,
-  ensureDBInitialized,
+  type Role,
+  STORES,
+  update,
+  type User,
+  userExists,
 } from './index'
-import { hasChildren } from './menus'
+import {hasChildren} from './menus'
 import dayjs from 'dayjs'
 
 /**
@@ -39,7 +39,7 @@ export async function initDefaultUsers(): Promise<void> {
       // 创建默认管理员用户，分配为超级管理员角色
       const defaultUser: User[] = [
         {
-          id: `user1_${Date.now()}`,
+          appID: `user1_${Date.now()}`,
           username: 'admin',
           password: 'admin', // 明文存储，仅用于开发测试
           name: '宇宙 Root 管理者 Rootiverse',
@@ -54,7 +54,7 @@ export async function initDefaultUsers(): Promise<void> {
           tags: 'vue3,typescript,admin',
         },
         {
-          id: `user2_${Date.now()}`,
+          appID: `user2_${Date.now()}`,
           username: 'user2',
           password: 'user2',
           name: '普通但不平凡的路人乙',
@@ -67,7 +67,7 @@ export async function initDefaultUsers(): Promise<void> {
         },
         // 无权限用户
         {
-          id: `user3_${Date.now()}`,
+          appID: `user3_${Date.now()}`,
           username: 'user3',
           password: 'user3',
           name: '权限被吃掉的少年',
@@ -140,7 +140,7 @@ export async function initDefaultRoles(): Promise<void> {
 
       const defaultRoles: Role[] = [
         {
-          id: 'role_1',
+          appID: 'role_1',
           name: '管理员',
           code: 'super_admin',
           description: '拥有系统所有权限，可管理所有功能',
@@ -151,7 +151,7 @@ export async function initDefaultRoles(): Promise<void> {
           updateTime: now,
         },
         {
-          id: 'role_2',
+          appID: 'role_2',
           name: '普通用户',
           code: 'user',
           description: '普通用户权限，可查看和操作基础功能',
@@ -163,7 +163,7 @@ export async function initDefaultRoles(): Promise<void> {
           updateTime: now,
         },
         {
-          id: 'role_3',
+          appID: 'role_3',
           name: '无权限用户',
           code: 'no_permission',
           description: '无权限用户，无法访问任何功能',
@@ -741,7 +741,7 @@ function flattenMenuTree(
 
     // 使用数据中定义的字段，如果没有则使用默认值
     const menu: Menu = {
-      id: menuId,
+      appID: menuId,
       type: menuType,
       path: item.path || '',
       title: item.title,

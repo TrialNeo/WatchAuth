@@ -19,8 +19,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ArrowRight } from '@element-plus/icons-vue'
-import type { IMenuItem } from '@/types/system/menu'
+import {ArrowRight} from '@element-plus/icons-vue'
+import type {IMenuItem} from '@/types/system/menu'
 
 defineOptions({ name: 'BreadcrumbView' })
 
@@ -101,7 +101,7 @@ const buildBreadcrumbPath = (
     // 只添加 type 为 'directory' 或 'menu' 的项到面包屑
     if (node.type === 'directory' || node.type === 'menu') {
       path.unshift({
-        id: node.id,
+        appID: node.id,
         title: node.title,
         path: node.path || '#',
         icon: node.icon,
@@ -133,7 +133,7 @@ const breadcrumbList = computed<BreadcrumbItem[]>(() => {
     // 如果找到首页，先添加首页
     if (homeMenu && route.path !== homeMenu.path) {
       path.push({
-        id: homeMenu.id,
+        appID: homeMenu.id,
         title: homeMenu.title,
         path: homeMenu.path || '/',
         icon: homeMenu.icon,
@@ -144,7 +144,7 @@ const breadcrumbList = computed<BreadcrumbItem[]>(() => {
     const routeTitle = route.meta?.title as string | undefined
     if (routeTitle) {
       path.push({
-        id: (route.name as string) || route.path,
+        appID: (route.name as string) || route.path,
         title: routeTitle,
         path: route.path,
         icon: route.meta?.icon as string | undefined,
@@ -169,7 +169,7 @@ const breadcrumbList = computed<BreadcrumbItem[]>(() => {
     const hasHome = path.some((item) => item.id === homeMenu.id)
     if (!hasHome) {
       path.unshift({
-        id: homeMenu.id,
+        appID: homeMenu.id,
         title: homeMenu.title,
         path: homeMenu.path || '/',
         icon: homeMenu.icon,

@@ -1,7 +1,7 @@
 <template>
   <BaseDialog
     v-model="open"
-    :title="submitForm.id ? '编辑数据' : '新增数据'"
+    :title="submitForm.appID ? '编辑数据' : '新增数据'"
     width="600"
     @close="close"
   >
@@ -47,8 +47,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useCloned } from '@vueuse/core'
-import type { FormInstance, FormRules } from 'element-plus'
+import {useCloned} from '@vueuse/core'
+import type {FormInstance, FormRules} from 'element-plus'
 
 defineOptions({ name: 'VxeTableCreate' })
 
@@ -59,7 +59,7 @@ const open = ref(false)
 const submitLoading = ref(false)
 
 const submitForm = ref({
-  id: undefined as string | undefined,
+  appID: undefined as string | undefined,
   name: '',
   role: '',
   sex: '0',
@@ -72,16 +72,16 @@ const confirm = async () => {
   // 深拷贝数据
   const { cloned } = useCloned(submitForm.value)
   console.log(cloned.value)
-  emits('refresh', submitForm.value.id ? 'update' : 'create', cloned.value)
-  ElMessage.success(submitForm.value.id ? '编辑成功' : '新增成功')
+  emits('refresh', submitForm.value.appID ? 'update' : 'create', cloned.value)
+  ElMessage.success(submitForm.value.appID ? '编辑成功' : '新增成功')
   close()
 }
 
 const close = () => {
   submitFormRef.value?.resetFields()
-  submitForm.value.id = undefined
+  submitForm.value.appID = undefined
   submitForm.value = {
-    id: undefined,
+    appID: undefined,
     name: '',
     role: '',
     sex: '0',

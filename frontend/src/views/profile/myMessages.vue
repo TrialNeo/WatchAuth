@@ -79,7 +79,7 @@
             :description="activeName === 'unread' ? '暂无未读消息' : '暂无消息'"
           />
           <TransitionGroup v-else name="group-slide-right" tag="div">
-            <div v-for="message in messageList" :key="message.id">
+            <div v-for="message in messageList" :key="message.appID">
               <HoverAnimateWrapper class="w-full" intensity="light" name="lift">
                 <div
                   class="group p-4 mb-3 flex items-center gap-4 border border-(--el-border-color-light) rounded-xl cursor-pointer hover:border-(--el-border-color) hover:bg-(--el-bg-color-page)"
@@ -105,13 +105,13 @@
                           size="1.5rem"
                           tooltip="设为已读"
                           type="primary"
-                          @click="userStore.markAsRead(message.id)"
+                          @click="userStore.markAsRead(message.appID)"
                         />
                         <el-divider v-if="!message.read" direction="vertical" />
                         <el-popconfirm
                           title="确定删除这条消息吗？"
                           @confirm="
-                            (userStore.deleteMessage(message.id), ElMessage.success('删除成功'))
+                            (userStore.deleteMessage(message.appID), ElMessage.success('删除成功'))
                           "
                         >
                           <template #reference>
@@ -148,10 +148,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Dialog } from '@/utils/dialog'
-import { delay } from '@/utils/utils'
+import {Dialog} from '@/utils/dialog'
+import {delay} from '@/utils/utils'
 import BadgeTabsMenu from '@/components/tabs/BadgeTabsMenu.vue'
-import { ElMessage } from 'element-plus'
+import {ElMessage} from 'element-plus'
 
 const userStore = useUserStore()
 const menuStore = useMenuStore()

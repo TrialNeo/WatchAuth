@@ -1,22 +1,22 @@
 /**
  * 菜单相关的 MSW Handlers
  */
-import { http, HttpResponse } from 'msw'
-import { APP_CONFIG } from '@/config/app.config'
+import {http, HttpResponse} from 'msw'
+import {APP_CONFIG} from '@/config/app.config'
 import {
-  getById,
   add,
-  update,
-  remove,
-  getAll,
-  STORES,
-  menuPathExists,
-  hasChildren,
   buildMenuTree,
+  getAll,
+  getById,
+  hasChildren,
   type Menu,
+  menuPathExists,
   type MenuType,
+  remove,
+  STORES,
+  update,
 } from '../db/index'
-import { verifyAuth } from './utils'
+import {verifyAuth} from './utils'
 import dayjs from 'dayjs'
 
 /**
@@ -187,7 +187,7 @@ export const createMenuHandler = http.post(
       // 创建菜单
       const now = dayjs().format('YYYY-MM-DD HH:mm:ss')
       const newMenu: Menu = {
-        id: `menu_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+        appID: `menu_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
         type,
         path: path || '',
         title,
