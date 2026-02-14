@@ -5,7 +5,6 @@ import (
 	"Diggpher/internal/service/errMsg"
 	"Diggpher/pkg/middleware/auth"
 	"encoding/json"
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"os"
 )
@@ -73,8 +72,7 @@ type menu struct {
 
 // Permissions 获取用户权限（通过用户身份获取菜单和按钮列表）
 func (a *AdminController) Permissions(c *fiber.Ctx) error {
-	userID, _ := auth.GetUserIDFromContext(c)
-	fmt.Println(userID)
+	_, _ = auth.GetUserIDFromContext(c)
 	menus := make([]menu, 0)
 	file, _ := os.ReadFile("./configs/menus.json")
 	_ = json.Unmarshal(file, &menus)

@@ -1,11 +1,11 @@
-import request from '@/utils/request'
+import request from '@/utils/request.ts'
 import type {
-  IRoleListParams,
-  IRoleListResponse,
   ICreateOrUpdateRoleParams,
   IRoleDetailResponse,
-} from '@/types/system/role'
-import type { ICommonResponse } from '@/types/common'
+  IRoleListParams,
+  IRoleListResponse,
+} from '@/types/system/role.ts'
+import type {ICommonResponse} from '@/types/common.ts'
 
 /**
  * 获取角色列表分页

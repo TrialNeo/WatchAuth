@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import type { RouteLocationNormalizedLoaded } from 'vue-router'
-import type { IMenuItem } from '@/types/system/menu'
+import {defineStore} from 'pinia'
+import type {RouteLocationNormalizedLoaded} from 'vue-router'
+import type {IMenuItem} from '@/types/system/menu.ts'
 
 export interface TabItem {
   path: string

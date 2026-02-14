@@ -11,7 +11,7 @@ import (
 func bindAdminRoute(admin fiber.Router) {
 	var (
 		adminCtrl = &controller.AdminController{
-			Service: new(service.AdminService),
+			Service: service.NewAdminService(),
 		}
 	)
 	admin.Post("/admin/login", adminCtrl.Login)
@@ -19,10 +19,17 @@ func bindAdminRoute(admin fiber.Router) {
 		// 这是授权之后的使用hh
 		router.Get("/permissions", adminCtrl.Permissions)
 		router.Route("/app", func(router fiber.Router) {
-			router.Get("/list", adminCtrl.GetAppList)
-			router.Post("/create", adminCtrl.CreateApp)
-			router.Post("/delete", adminCtrl.DeleteApp)
-			router.Post("/info", adminCtrl.AppInfo)
+			router.
+				Get("/list", adminCtrl.GetAppList).
+				Post("/create", adminCtrl.CreateApp).
+				Post("/delete", adminCtrl.DeleteApp).
+				Post("/info", adminCtrl.AppInfo).
+				Route("/version", func(router fiber.Router) {
+					router.
+						Get("/appNameList", adminCtrl.GetAppNameList).
+						Post("/list", adminCtrl.GetVerList).
+						Post("/create", adminCtrl.NewVer)
+				})
 		})
 	})
 

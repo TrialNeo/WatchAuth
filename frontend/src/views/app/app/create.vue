@@ -1,9 +1,9 @@
 <template>
   <BaseDialog
     v-model="open"
-    :title="submitForm.appID ? '编辑应用' : '新增应用'"
+    :title="submitForm.appID == '' ? '编辑应用' : '新增应用'"
     style="height: 60vh"
-    width="600"
+    width="650"
     @close="close"
   >
     <el-scrollbar>
@@ -15,7 +15,11 @@
         label-width="100px"
       >
         <el-form-item label="应用名称" prop="appName">
-          <el-input v-model="submitForm.appName" placeholder="请输入应用名称"/>
+          <el-input
+            v-model="submitForm.appName"
+            :readonly="!!submitForm.appID"
+            placeholder="请输入应用名称"
+          />
         </el-form-item>
         <el-form-item label="应用描述" prop="description">
           <el-input
@@ -33,9 +37,9 @@
         </el-form-item>
         <el-form-item label="计费方式">
           <el-select v-model="submitForm.feeType" placeholder="请选择">
-            <el-option :value="0" label="免费"/>
-            <el-option :value="1" label="时长"/>
-            <el-option :value="2" label="次数"/>
+            <el-option :value="0" label="免费" />
+            <el-option :value="1" label="时长" />
+            <el-option :value="2" label="次数" />
           </el-select>
         </el-form-item>
         <template v-if="submitForm.feeType === 1">
@@ -47,7 +51,7 @@
             </el-input-number>
           </el-form-item>
         </template>
-        <template v-if="submitForm.feeType  === 2">
+        <template v-if="submitForm.feeType === 2">
           <el-form-item label="单价">
             <el-input-number v-model="submitForm.fee" :min="0" :step="0.001" style="width: 100%">
               <template #suffix>
@@ -58,13 +62,11 @@
         </template>
         <el-form-item label="加密方式" prop="encType">
           <el-select v-model="submitForm.encType" placeholder="请选择">
-            <el-option :value="0" label="None"/>
-            <el-option :value="1" label="RSA"/>
-            <el-option :value="2" label="AesGcm"/>
+            <el-option :value="0" label="None" />
+            <el-option :value="1" label="RSA" />
+            <el-option :value="2" label="AesGcm" />
           </el-select>
         </el-form-item>
-
-
       </el-form>
     </el-scrollbar>
 
@@ -76,12 +78,12 @@
 </template>
 
 <script lang="ts" setup>
-import {type ElTree, type FormInstance, type FormRules} from 'element-plus'
+import {ElMessage, type ElTree, type FormInstance, type FormRules} from 'element-plus'
 import type {IMenuItem} from '@/types/system/menu'
-import {createApp2, infoApp} from "@/api/app.ts";
-import type {IAppItem, ICreateOrUpdateAppParams} from "@/types/app/app.ts";
+import {createApp2, infoApp} from '@/api/app.ts'
+import type {ICreateOrUpdateAppParams} from '@/types/app/app.ts'
 
-defineOptions({name: 'AppCreate'})
+defineOptions({ name: 'AppCreate' })
 
 const emits = defineEmits(['refresh'])
 
@@ -126,47 +128,53 @@ const confirm = async () => {
     encType: submitForm.value.encType!,
     feeType: submitForm.value.feeType!,
     fee: submitForm.value.fee,
-    status: submitForm.value.status
+    status: submitForm.value.status,
   }
-  const {data: res} = submitForm.value.appID
+  const { data: res } = submitForm.value.appID
     ? await createApp2(payload)
     : await createApp2(payload)
-  if (res.code !== 0) return
+  if (res.code !== 0) {
+    ElMessage.error(res.msg)
+    return
+  }
   ElMessage.success(submitForm.value.appID ? '编辑成功' : '新增成功')
   emits('refresh', submitForm.value.appID ? 'update' : 'create')
   close()
 }
-
-// 角色列表
-const app = ref<IAppItem>()
 // 获取应用信息
 const getAppInfo = async (appID: string) => {
-  const {data: res} = await infoApp(appID)
-  if (res.code !== 0) return
-  const {appName, description, status, feeType, fee, enctype} = res.data.app
-  submitForm.value = {
-    appID: appID,
-    appName: appName,
-    description: description,
-    status: status,
-    feeType: feeType,
-    fee: fee,
-    encType: enctype
+  const { data: res } = await infoApp(appID)
+  switch (res.code) {
+    case 500:
+      return
+    case 0:
+      const { appName, description, status, feeType, fee, enctype } = res.data.app
+      submitForm.value = {
+        appID: appID,
+        appName: appName,
+        description: description,
+        status: status,
+        feeType: feeType,
+        fee: fee,
+        encType: enctype,
+      }
+      break
+    default:
+      ElMessage.error(res.msg)
+      return
   }
 }
 
-
 // 表单验证规则
 const formRules: FormRules = {
-  appName: [{required: true, message: '请输入应用名称', trigger: 'blur'}],
-  status: [{required: true, message: '请选择状态', trigger: 'change'}],
+  appName: [{ required: true, message: '请输入应用名称', trigger: 'blur' }],
+  status: [{ required: true, message: '请选择状态', trigger: 'change' }],
 }
 
 // 显示对话框
 const showDialog = async (appID: string | undefined) => {
   open.value = true
-  getAppInfo(appID as string)
-
+  await getAppInfo(appID as string)
 }
 
 defineExpose({

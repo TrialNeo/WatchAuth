@@ -1,11 +1,11 @@
-import request from '@/utils/request'
+import request from '@/utils/request.ts'
 import type {
   IAppResponse,
   IAppsParams,
   IAppsResponse,
   ICreateOrUpdateAppParams,
 } from '@/types/app/app.ts'
-import type {ICommonResponse} from '@/types/common'
+import type {ICommonResponse} from '@/types/common.ts'
 
 /**
  * 获取角色列表分页

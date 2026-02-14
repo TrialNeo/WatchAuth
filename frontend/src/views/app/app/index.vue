@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card class="card-clear-mb" shadow="never">
-      <el-form ref="queryFormRef" :model="queryForm" label-width="auto" @keyup.enter="getRoleList">
+      <el-form ref="queryFormRef" :model="queryForm" label-width="auto" @keyup.enter="getAppList">
         <el-row :gutter="10">
           <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
             <el-form-item label="应用名称" prop="name">
@@ -14,7 +14,7 @@
             </el-form-item>
           </el-col>
           <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
-            <el-form-item label="状态" prop="status">
+            <el-form-item label="应用名称" prop="status">
               <el-select v-model="queryForm.status" placeholder="请选择">
                 <el-option :value="1" label="启用"/>
                 <el-option :value="0" label="禁用"/>
@@ -23,7 +23,7 @@
           </el-col>
           <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
             <el-form-item>
-              <el-button :icon="menuStore.iconComponents.Search" type="primary" @click="getRoleList"
+              <el-button :icon="menuStore.iconComponents.Search" type="primary" @click="getAppList"
               >搜索
               </el-button
               >
@@ -191,11 +191,10 @@
               : PAGINATION_CONFIG.desktopPagerCount
           "
           :total="pagination.total"
-          @change="getRoleList"
+          @change="getAppList"
         />
       </div>
     </el-card>
-
     <AppCreate ref="appCreateRef" @refresh="refresh"/>
   </div>
 </template>
@@ -206,7 +205,7 @@ import {useButtonPermission} from '@/composables/useButtonPermission'
 import {PAGINATION_CONFIG, POPCONFIRM_CONFIG, TABLE_CONFIG} from '@/config/elementConfig'
 import AppCreate from '@/views/app/app/create.vue'
 import type {IAppItem} from '@/types/app/app.ts'
-import type {FormInstance} from 'element-plus'
+import {ElMessage, type FormInstance} from 'element-plus'
 
 defineOptions({name: 'AppView'})
 
@@ -228,7 +227,7 @@ const encTypeMap = {
 }
 
 // 删除角色的ids
-const deleteAppIDs   = ref<string[]>([])
+const deleteAppIDs = ref<string[]>([])
 
 // 查询表单
 const queryForm = ref({
@@ -251,11 +250,11 @@ const pagination = ref({
 // 重置查询表单
 const reset = () => {
   queryFormRef.value?.resetFields()
-  getRoleList()
+  getAppList()
 }
 
-// 获取角色列表
-const getRoleList = async () => {
+// 获取App列表
+const getAppList = async () => {
   const params = {
     ...queryForm.value,
     page: pagination.value.page,
@@ -275,15 +274,18 @@ const tableSelectionChange = (selection: IAppItem[]) => {
 // 表格排序变化
 const tableSortChange = ({order}: { order: 'ascending' | 'descending' | null }) => {
   queryForm.value.sortOrder = order === 'ascending' ? 'asc' : 'desc'
-  getRoleList()
+  getAppList()
 }
 
 // 删除角色
 const deleteAppHandle = async (names: string[]) => {
   const {data: res} = await deleteApp(names)
-  if (res.code !== 0) return
+  if (res.code !== 0) {
+    ElMessage.error(res.msg)
+    return
+  }
   ElMessage.success('删除成功')
-  getRoleList()
+  await getAppList()
 }
 
 // 刷新
@@ -296,11 +298,11 @@ const refresh = (type: 'create' | 'update') => {
       pagination.value.pageSize,
     )
   }
-  getRoleList()
+  getAppList()
 }
 
 onMounted(() => {
-  getRoleList()
+  getAppList()
 })
 </script>
 

@@ -3,23 +3,25 @@
     <OverviewHeader />
     <RevenueProfitAnalysis ref="revenueProfitAnalysisRef" />
     <el-row :gutter="20">
+      <!--全球市场份额分布-->
       <el-col :lg="8" :md="12" :xs="24">
         <MarketShare ref="marketShareRef" />
       </el-col>
+      <!--热销商品类目 TOP 5-->
       <el-col :lg="8" :md="12" :xs="24" class="mt-4 min-[992px]:mt-0">
         <TopCategories ref="topCategoriesRef" />
       </el-col>
+      <!--营销目标和今日之星-->
       <el-col :lg="8" :md="24" :xs="24" class="mt-4 min-[1200px]:mt-0">
         <GoalsAndTodayStart />
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :lg="14" :xs="24">
+      <el-col :lg="24" :xs="24">
+        <!--各渠道销售表现实时榜单-->
         <ChannelSales />
       </el-col>
-      <el-col :lg="10" :xs="24" class="mt-4 min-[1200px]:mt-0">
-        <OperationalEvent />
-      </el-col>
+      <!--近期运营大事件-->
     </el-row>
   </div>
 </template>
@@ -31,7 +33,6 @@ import MarketShare from '@/views/dashboard/analysis/marketShare.vue'
 import TopCategories from '@/views/dashboard/analysis/topCategories.vue'
 import GoalsAndTodayStart from '@/views/dashboard/analysis/goalsAndTodayStart.vue'
 import ChannelSales from '@/views/dashboard/analysis/channelSales.vue'
-import OperationalEvent from '@/views/dashboard/analysis/operationalEvent.vue'
 
 defineOptions({ name: 'AnalysisView' })
 

@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { staticRoutes } from '@/router/route'
-import { menuToRoute } from '@/utils/menuToRoute'
-import { useTabsStore } from '@/stores/tabs'
+import {createRouter, createWebHistory} from 'vue-router'
+import {staticRoutes} from '@/router/route.ts'
+import {menuToRoute} from '@/utils/menuToRoute.ts'
+import {useTabsStore} from '@/stores/tabs.ts'
 import NProgress from 'nprogress'
 
 // 配置 NProgress

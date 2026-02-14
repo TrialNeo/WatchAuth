@@ -47,7 +47,7 @@ func (a *AdminController) DeleteApp(c *fiber.Ctx) error {
 	}
 }
 
-// AppInfo
+// AppInfo 获取单个app详细信息
 func (a *AdminController) AppInfo(c *fiber.Ctx) error {
 	reqParam := struct {
 		AppID string `json:"appid"`

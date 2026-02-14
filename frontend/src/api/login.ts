@@ -1,11 +1,6 @@
-import request from '@/utils/request'
-import type { IUserDetailResponse } from '@/types/system/user'
-import type {
-  ILoginParams,
-  ILoginResponse,
-  IUserPermissionsResponse,
-  ILoginLogParams,
-} from '@/types/login'
+import request from '@/utils/request.ts'
+import type {IUserDetailResponse} from '@/types/system/user.ts'
+import type {ILoginParams, ILoginResponse, IUserPermissionsResponse,} from '@/types/login.ts'
 
 export const login = (params: ILoginParams) => {
   return request.post<ILoginResponse>('admin/login', params)

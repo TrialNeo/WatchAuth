@@ -11,7 +11,7 @@ import (
 func RunWebService() {
 	global.WebApp = fiber.New(global.FbConfig)
 	global.WebApp.Use(cors.New(cors.Config{
-		AllowOrigins: "http://localhost:3007/",
+		AllowOrigins: "http://localhost:3007,http://10.150.83.58:3007",
 		AllowMethods: "GET,POST,PUT,DELETE",
 		AllowHeaders: "Content-Type,Authorization,X-Requested-With",
 	}))

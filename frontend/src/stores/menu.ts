@@ -3,8 +3,8 @@ import * as ElIcons from '@element-plus/icons-vue'
 import * as HeroOutlineIcons from '@heroicons/vue/24/outline'
 import * as HeroSolidIcons from '@heroicons/vue/24/solid'
 import {useWindowSize} from '@vueuse/core'
-import {userPermissions} from '@/api/login'
-import type {IMenuItem} from '@/types/system/menu'
+import {userPermissions} from '@/api/login.ts'
+import type {IMenuItem} from '@/types/system/menu.ts'
 
 export const useMenuStore = defineStore('menu', () => {
   // el-icon 图标映射

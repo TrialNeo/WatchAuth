@@ -1,14 +1,14 @@
-import request from '@/utils/request'
+import request from '@/utils/request.ts'
 import type {
-  IUserListParams,
-  IUserListResponse,
   ICreateOrUpdateUserParams,
-  IUserDetailResponse,
-  IUpdateUserProfileParams,
   IUpdatePasswordParams,
   IUpdateUserAvatarParams,
-} from '@/types/system/user'
-import type { ICommonResponse } from '@/types/common'
+  IUpdateUserProfileParams,
+  IUserDetailResponse,
+  IUserListParams,
+  IUserListResponse,
+} from '@/types/system/user.ts'
+import type {ICommonResponse} from '@/types/common.ts'
 
 /**
  * 获取用户列表分页

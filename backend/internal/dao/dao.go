@@ -16,4 +16,8 @@ func BindDao() {
 	if err != nil {
 		panic(err)
 	}
+	err = global.DataBase.AutoMigrate(new(Version))
+	if err != nil {
+		panic(err)
+	}
 }

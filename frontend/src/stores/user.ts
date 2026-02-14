@@ -1,21 +1,21 @@
 import {defineStore} from 'pinia'
-import {userInfoRequest} from '@/api/login'
-import {rolePage} from '@/api/role'
-import {deleteUser, updateAvatarRequest, updatePasswordRequest, updateProfile} from '@/api/user'
+import {userInfoRequest} from '@/api/login.ts'
+import {rolePage} from '@/api/role.ts'
+import {deleteUser, updateAvatarRequest, updatePasswordRequest, updateProfile} from '@/api/user.ts'
 import {ElMessage} from 'element-plus'
 import router, {resetRouter} from '@/router'
-import {useMenuStore} from './menu'
-import {useTabsStore} from './tabs'
+import {useMenuStore} from './menu.ts'
+import {useTabsStore} from './tabs.ts'
 import defaultAvatarSvg from '@/assets/defaultAvatar.svg'
 import defaultSystemAvatar from '@/assets/images/defaultSystemAvatar.svg'
-import type {IRoleItem} from '@/types/system/role'
-import type {ICurrentTab, ITabsMenuData} from '@/types/profile'
+import type {IRoleItem} from '@/types/system/role.ts'
+import type {ICurrentTab, ITabsMenuData} from '@/types/profile.ts'
 import type {
   IUpdatePasswordParams,
   IUpdateUserProfileParams,
   IUserItem,
   IUserMessageItem,
-} from '@/types/system/user'
+} from '@/types/system/user.ts'
 import dayjs from 'dayjs'
 
 export const useUserStore = defineStore('user', () => {

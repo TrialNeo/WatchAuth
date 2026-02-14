@@ -128,9 +128,9 @@ const roleOptions: Array<{
   value: RolePreset
   preset: { username: string; password: string }
 }> = [
-  {label: '超级管理员', value: 'super_admin', preset: {username: 'admin', password: 'admin'}},
-  {label: '普通用户', value: 'normal', preset: {username: 'user2', password: 'user2'}},
-  {label: '无权限用户', value: 'noperm', preset: {username: 'user3', password: 'user3'}},
+  {label: '超级管理员', value: 'super_admin', preset: {username: '', password: ''}},
+  {label: '普通用户', value: 'normal', preset: {username: '', password: ''}},
+  {label: '无权限用户', value: 'noperm', preset: {username: '', password: ''}},
 ]
 
 // 切换角色

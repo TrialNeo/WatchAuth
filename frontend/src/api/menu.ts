@@ -1,6 +1,6 @@
-import request from '@/utils/request'
-import type { ICommonResponse } from '@/types/common'
-import type { IMenuItem, IMenuListResponse, ICreateOrUpdateMenuParams } from '@/types/system/menu'
+import request from '@/utils/request.ts'
+import type {ICommonResponse} from '@/types/common.ts'
+import type {ICreateOrUpdateMenuParams, IMenuItem, IMenuListResponse} from '@/types/system/menu.ts'
 
 /**
  * 获取菜单列表（树形结构）
