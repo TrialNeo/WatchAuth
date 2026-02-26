@@ -28,7 +28,7 @@ export interface IAppsParams {
 
 // 创建/更新应用参数
 export interface ICreateOrUpdateAppParams {
-  appid:string
+  appid: string
   appName: string
   description: string
   status: number
@@ -36,7 +36,6 @@ export interface ICreateOrUpdateAppParams {
   fee: number
   encType: number
 }
-
 
 // 应用信息响应
 export type IAppsResponse = ICommonResponse<{
@@ -46,8 +45,6 @@ export type IAppsResponse = ICommonResponse<{
   pageSize: number
 }>
 
-
-// 角色列表响应
 export type IAppResponse = ICommonResponse<{
-  app: IAppItem
+  app: IAppItem[]
 }>

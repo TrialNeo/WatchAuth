@@ -11,7 +11,12 @@
           <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
             <el-form-item label="应用名称" prop="status">
               <el-select v-model="queryForm.appId" filterable placeholder="请选择">
-                <el-option v-for="item in appNames" :key="item.appId" :label="item.appName" :value="item.appId" />
+                <el-option
+                  v-for="item in appNames"
+                  :key="item.appId"
+                  :label="item.appName"
+                  :value="item.appId"
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -76,34 +81,7 @@
             <a :href="row.patch_url" :text="row.patch_url" />
           </template>
         </el-table-column>
-        <el-table-column :align="TABLE_CONFIG.align" fixed="right" label="操作" min-width="130">
-          <template #default="{ row }: { row: IAppItem }">
-            <el-button
-              v-permission="['role:edit']"
-              :icon="menuStore.iconComponents.Edit"
-              link
-              type="primary"
-            >
-              编辑
-            </el-button>
-            <el-popconfirm
-              :placement="POPCONFIRM_CONFIG.placement"
-              :width="POPCONFIRM_CONFIG.width"
-              title="确定要删除选中的应用吗？"
-            >
-              <template #reference>
-                <el-button
-                  v-permission="['role:delete']"
-                  :icon="menuStore.iconComponents.Delete"
-                  link
-                  type="danger"
-                >
-                  删除
-                </el-button>
-              </template>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
+        <toolbar></toolbar>
       </el-table>
     </el-card>
     <VerCreate ref="verUpdateRef" />
@@ -112,8 +90,7 @@
 
 <script lang="ts" setup>
 import {ElMessage, type FormInstance} from 'element-plus'
-import {POPCONFIRM_CONFIG, TABLE_CONFIG} from '@/config/elementConfig.ts'
-import type {IAppItem} from '@/types/app/app.ts'
+import {TABLE_CONFIG} from '@/config/elementConfig.ts'
 import AppVerService from '@/api/version.ts'
 import type {IKAppIDVAppName, IVerInfoItem} from '@/types/app/version.ts'
 import VerCreate from '@/views/app/version/create.vue'

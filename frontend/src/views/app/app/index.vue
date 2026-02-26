@@ -277,7 +277,7 @@ const tableSortChange = ({order}: { order: 'ascending' | 'descending' | null }) 
   getAppList()
 }
 
-// 删除角色
+// 删除应用
 const deleteAppHandle = async (names: string[]) => {
   const {data: res} = await deleteApp(names)
   if (res.code !== 0) {
