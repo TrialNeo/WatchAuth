@@ -1,0 +1,12 @@
+{
+  "appid": 10001,
+  "machine": {
+    "platform": "Windows 11 Pro",
+    "arch": "x64",
+    "deviceId": "4Y34-7CFU-77JTK7AN",
+    "machineName": "DESKTOP-318536152",
+    "cpu": "Intel Core i7-12700H",
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "ram": "128gb"
+  }
+}

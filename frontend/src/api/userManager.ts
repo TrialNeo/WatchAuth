@@ -19,3 +19,8 @@ export const userManager = {
     return request.post<ICommonResponse<null>>('admin/user/topUp', data)
   }
 }
+
+export const MachineManager = {
+  list(){
+  }
+}

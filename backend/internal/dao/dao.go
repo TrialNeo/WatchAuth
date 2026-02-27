@@ -8,16 +8,13 @@ import (
 func BindDao() {
 	global.DataBase = global.DataBase.Debug()
 	//下面数据库初始化失败就不能继续用了。。
-	err := global.DataBase.AutoMigrate(new(Admin))
+	err := global.DataBase.AutoMigrate(
+		new(Admin),
+		new(App), new(Version),
+		new(Machine), new(MachineInfo), new(UsedApp),
+	)
 	if err != nil {
 		panic(err)
 	}
-	err = global.DataBase.AutoMigrate(new(App))
-	if err != nil {
-		panic(err)
-	}
-	err = global.DataBase.AutoMigrate(new(Version))
-	if err != nil {
-		panic(err)
-	}
+
 }

@@ -15,6 +15,7 @@
       {
         "appId": 1,
         "online": true,
+        "loginIp": "127.0.0.1",
         "lastOnlineAt": "2026-02-20T18:30:00Z",
         "lastHeartbeatAt": "2026-02-20T19:15:22Z",
         "lastOfflineAt": null

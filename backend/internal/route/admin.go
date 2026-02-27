@@ -13,6 +13,7 @@ func bindAdminRoute(admin fiber.Router) {
 		adminCtrl = &controller.AdminController{
 			Service: service.NewAdminService(),
 		}
+		userCtrl = &controller.AdminUserController{}
 	)
 	admin.Post("/admin/login", adminCtrl.Login)
 	admin.Use(auth.MiddlewareAuth()).Route("/admin", func(router fiber.Router) {
@@ -31,6 +32,14 @@ func bindAdminRoute(admin fiber.Router) {
 						Post("/create", adminCtrl.NewVer)
 				})
 		})
+
+		router.Route("/user", func(router fiber.Router) {
+			router.Route("/machine", func(router fiber.Router) {
+				router.
+					Post("/auth", userCtrl.Auth)
+			})
+		})
+
 	})
 
 }
