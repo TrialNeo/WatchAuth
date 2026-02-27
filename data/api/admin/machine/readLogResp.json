@@ -1,22 +1,28 @@
-[
-  {
-    "time": "2026-02-21T18:25:22Z",
-    "type": "info",
-    "appVersion": "1.2.2",
-    "trainId": 1,
-    "spanId": 2,
-    "module": "test",
-    "func": "SayLoveU",
-    "msg": "lol"
-  },
-  {
-    "time": "2026-02-22T18:25:22Z",
-    "type": "info",
-    "appVersion" : "1.2.1",
-    "trainId": 1,
-    "spanId": 3,
-    "module": "test",
-    "func": "SayLoveU",
-    "msg": "lol"
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "data": [
+      {
+        "time": "2026-02-21T18:25:22Z",
+        "type": "info",
+        "appVersion": "1.2.2",
+        "trainId": 1,
+        "spanId": 2,
+        "module": "test",
+        "func": "SayLoveU",
+        "msg": "lol"
+      },
+      {
+        "time": "2026-02-22T18:25:22Z",
+        "type": "info",
+        "appVersion": "1.2.1",
+        "trainId": 1,
+        "spanId": 3,
+        "module": "test",
+        "func": "SayLoveU",
+        "msg": "lol"
+      }
+    ]
   }
-]
+}

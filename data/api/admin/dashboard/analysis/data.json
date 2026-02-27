@@ -1,0 +1,15 @@
+{
+  "code":0,
+  "msg": "",
+  "data": {
+    "total": {
+      "revenue": "100.0005",
+      "online": 5,
+      "users": 1000
+    },
+    "hot": {
+
+    }
+  }
+
+}

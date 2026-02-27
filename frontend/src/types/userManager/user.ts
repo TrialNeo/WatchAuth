@@ -1,9 +1,10 @@
 import type {ICommonResponse} from '@/types/common.ts'
 
 export type IUserItem = {
-  userid: number
+  userID: number
   userName: string
   email: string
+  privilege: number
   account: string
   balance: string
   spend: string
@@ -11,7 +12,7 @@ export type IUserItem = {
 }
 //IUserItemResp 用户列表
 export type IUserItemResp = ICommonResponse<{
-  IUserItems: IUserItem[]
+  list: IUserItem[]
 }>
 //IUserBanParams 用户封禁
 export interface IUserBanParams {
@@ -30,3 +31,37 @@ export interface ITopUpParams {
   userid: number
   amt: string
 }
+
+// 机器信息类型
+export type IMachineInfo = {
+  platform: string
+  arch: string
+  deviceId: string
+  machineName: string
+  cpu: string
+  gpu: string
+  ram: string
+}
+
+// 使用的应用类型
+export type IUsedApp = {
+  appId: number
+  online: boolean
+  loginIp?: string
+  lastOnlineAt: string
+  lastHeartbeatAt: string
+  lastOfflineAt: string | null
+}
+
+// 机器项类型
+export type IMachineItem = {
+  machineId: number
+  belong: number
+  machine: IMachineInfo
+  usedApps: IUsedApp[]
+}
+
+// 机器列表响应类型
+export type IMachineListResp = ICommonResponse<{
+  list: IMachineItem[]
+}>
