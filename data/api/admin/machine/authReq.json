@@ -1,9 +1,5 @@
 {
-  "code": 0,
-  "msg": "",
-  "data": {
-    "userId": 1,
-    "appid": 10001,
-    "deviceId": "4Y34-7CFU-77JTK7AN"
-  }
+  "userId": 1,
+  "appid": 10001,
+  "deviceId": "4Y34-7CFU-77JTK7AN"
 }
