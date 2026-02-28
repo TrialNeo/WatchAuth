@@ -34,12 +34,14 @@ func bindAdminRoute(admin fiber.Router) {
 		})
 
 		router.Route("/user", func(router fiber.Router) {
-			router.Route("/machine", func(router fiber.Router) {
-				router.
-					Post("/auth", userCtrl.Auth)
-			})
-		})
 
+		})
+		router.Route("/machine", func(router fiber.Router) {
+			router.
+				Post("/auth", userCtrl.Auth).
+				Get("/list", userCtrl.List)
+
+		})
 	})
 
 }

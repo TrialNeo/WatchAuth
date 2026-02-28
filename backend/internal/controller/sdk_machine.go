@@ -12,8 +12,8 @@ func (s *SdkController) Login(c *fiber.Ctx) error {
 		Machine service.Machine `json:"machine"`
 	}{}
 	if err := c.BodyParser(&reqParam); err != nil {
-		return Fail(c, errMsg.ERROR, "")
+		return Respond(c, errMsg.ERRORInvalidParams, nil)
 	}
 	service.Login(reqParam.Appid, &reqParam.Machine, c.IP())
-	return Success(c, nil)
+	return Respond(c, errMsg.SUCCESS, nil)
 }

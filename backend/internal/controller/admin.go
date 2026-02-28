@@ -2,7 +2,6 @@ package controller
 
 import (
 	"Diggpher/internal/service"
-	"Diggpher/internal/service/errMsg"
 	"Diggpher/pkg/middleware/auth"
 	"encoding/json"
 	"github.com/gofiber/fiber/v2"
@@ -23,10 +22,7 @@ func (a *AdminController) Login(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"msg": err.Error()})
 	}
 	resp := a.Service.Login(login.Username, login.Password, c.IP())
-	if resp.Code == errMsg.SUCCESS {
-		return Success(c, fiber.Map{"token": resp.Token})
-	}
-	return Fail(c, resp.Code, resp.ErrMsg)
+	return Respond(c, resp.Code, resp.ErrMsg)
 }
 
 type menu struct {
@@ -76,7 +72,7 @@ func (a *AdminController) Permissions(c *fiber.Ctx) error {
 	menus := make([]menu, 0)
 	file, _ := os.ReadFile("./configs/menus.json")
 	_ = json.Unmarshal(file, &menus)
-	return Success(c, fiber.Map{
+	return Respond(c, 0, fiber.Map{
 		"buttonPermissions": []string{"user:add", "user:edit", "user:delete", "user:view", "role:add", "role:edit", "role:delete", "role:view", "menu:add", "menu:edit", "menu:delete", "menu:view"},
 		"menus":             menus,
 	})

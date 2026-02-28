@@ -23,8 +23,7 @@ func (a *AdminService) GetAppNameList() (resp AppNameListResp) {
 	//先尝试从redis中获取 提高性能
 	appDao, err := a.getAppsFromRedis()
 	if err != nil {
-		resp.Code = errMsg.ERROR
-		resp.ErrMsg = err.Error()
+		resp.Code = errMsg.ERRORDataBaseErr
 		return resp
 	}
 	appNames := make([]IKAppIDVAppName, 0)

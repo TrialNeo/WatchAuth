@@ -1,29 +1,27 @@
 package controller
 
 import (
+	"Diggpher/internal/service/errMsg"
 	"github.com/gofiber/fiber/v2"
 )
 
-type Response struct {
+type Response[T any] struct {
 	Code    uint        `json:"code"`
-	Message string      `json:"msg"`
+	Message string      `json:"msg,omitempty"`
 	Data    interface{} `json:"data,omitempty"`
 }
 
-// Success 成功
-func Success(c *fiber.Ctx, data interface{}) error {
-	return c.Status(fiber.StatusOK).JSON(&Response{
-		Code:    0,
-		Message: "",
-		Data:    data,
-	})
-}
-
-// Fail 业务失败（仍返回 HTTP 200）
-func Fail(c *fiber.Ctx, code uint, message string) error {
-	return c.Status(fiber.StatusOK).JSON(&Response{
+// Respond 统一返回，汇总
+func Respond(c *fiber.Ctx, code uint, data interface{}) error {
+	if code != errMsg.SUCCESS {
+		return c.Status(fiber.StatusOK).JSON(&Response[any]{
+			Code:    code,
+			Message: errMsg.GetErrMsg(code),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(&Response[any]{
 		Code:    code,
-		Message: message,
-		Data:    nil,
+		Message: errMsg.GetErrMsg(code),
+		Data:    data,
 	})
 }

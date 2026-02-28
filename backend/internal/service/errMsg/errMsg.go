@@ -1,9 +1,10 @@
 package errMsg
 
 const (
-	SUCCESS          = (0)
-	ERROR            = 500
-	ERRORDataBaseErr = 501
+	SUCCESS            = 0
+	ERROR              = 500
+	ERRORDataBaseErr   = 501
+	ERRORInvalidParams = 502
 )
 
 // Admin模块
@@ -22,12 +23,15 @@ const (
 )
 
 var codeMsg = map[uint]string{
+	ERROR:              "服务器内部错误",
+	ERRORInvalidParams: "非法参数",
+	ERRORDataBaseErr:   "服务器数据库错误",
+
 	ErrorAdminPswError:     "密码错误",
 	ErrorAdminUserNotFound: "用户不存在",
 	ErrorTokenInvalid:      "Token已失效",
 	ErrorAdminAppDelDBFail: "数据异常",
 	ErrorAdminAppNotFound:  "应用不存在",
-	ERRORDataBaseErr:       "内部数据库错误",
 	ErrorAdminAppVerUsed:   "该版本号已被使用",
 }
 

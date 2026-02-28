@@ -13,10 +13,15 @@ func (u *UserMachineController) Auth(c *fiber.Ctx) error {
 		DeviceId string `json:"deviceId"`
 	}{}
 	if err := c.BodyParser(&reqParam); err != nil {
-		return Fail(c, errMsg.ERROR, "")
+		return Respond(c, errMsg.ERRORInvalidParams, nil)
 	}
 	if err := u.Service.Auth(reqParam.Appid, reqParam.DeviceId); err != nil {
-		return Fail(c, errMsg.ERROR, err.Error())
+		return Respond(c, errMsg.ERROR, nil)
 	}
-	return Success(c, nil)
+	return Respond(c, errMsg.SUCCESS, nil)
+}
+
+func (u *UserMachineController) List(c *fiber.Ctx) error {
+	code, response := u.Service.List()
+	return Respond(c, code, response)
 }

@@ -8,7 +8,7 @@ import (
 // GetAppNameList 获取现有app名称列表
 func (a *AdminController) GetAppNameList(c *fiber.Ctx) error {
 	resp := a.Service.GetAppNameList()
-	return Success(c, fiber.Map{
+	return Respond(c, resp.Code, fiber.Map{
 		"appNames": resp.AppNames,
 	})
 }
@@ -21,7 +21,7 @@ func (a *AdminController) GetVerList(c *fiber.Ctx) error {
 		req.Appid = ""
 	}
 	resp := a.Service.GetVerList(req.Appid)
-	return Success(c, fiber.Map{"infos": resp.VerList})
+	return Respond(c, resp.Code, fiber.Map{"infos": resp.VerList})
 }
 
 func (a *AdminController) NewVer(c *fiber.Ctx) error {
@@ -35,11 +35,8 @@ func (a *AdminController) NewVer(c *fiber.Ctx) error {
 		PatchUrl    string `json:"patchUrl"`
 	}{}
 	if err := c.BodyParser(&req); err != nil {
-		return Fail(c, errMsg.ERROR, err.Error())
+		return Respond(c, errMsg.ERRORInvalidParams, nil)
 	}
 	resp := a.Service.NewVer(req.Appid, req.Version, req.Desc, req.Sign, req.PatchUrl, req.ForceUpdate, req.Status)
-	if resp.Code != errMsg.SUCCESS {
-		return Fail(c, resp.Code, resp.ErrMsg)
-	}
-	return Success(c, nil)
+	return Respond(c, resp.Code, nil)
 }
