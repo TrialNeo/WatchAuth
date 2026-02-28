@@ -37,8 +37,9 @@ type UsedApps struct {
 	LastOfflineAt   *time.Time `json:"lastOfflineAt"`
 }
 type MachineItem struct {
-	MachineId int `json:"machineId"`
-	Belong    int `json:"belong"`
+	MachineId int  `json:"machineId"`
+	Belong    int  `json:"belong"`
+	IsBan     bool `json:"isBan" default:false;`
 	Machine   struct {
 		Platform    string `json:"platform"`
 		Arch        string `json:"arch"`
@@ -64,7 +65,7 @@ func (u *AdminUserMachineService) List() (code uint, response []*MachineItem) {
 		code = errMsg.ERRORDataBaseErr
 		return
 	}
-	response = make([]*MachineItem, 0)
+	response = make([]*MachineItem, 0, len(machinesDao))
 	for _, machineDao := range machinesDao {
 		usedApps := make([]UsedApps, 0)
 		for _, usedApp := range machineDao.UsedApps {
@@ -80,6 +81,7 @@ func (u *AdminUserMachineService) List() (code uint, response []*MachineItem) {
 		response = append(response, &MachineItem{
 			MachineId: machineDao.MachineId,
 			Belong:    machineDao.Belong,
+			IsBan:     machineDao.IsBan,
 			Machine: Machine{
 				Platform:    machineDao.MachineInfo.Platform,
 				Arch:        machineDao.MachineInfo.Arch,

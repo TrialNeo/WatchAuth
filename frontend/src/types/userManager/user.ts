@@ -57,6 +57,7 @@ export type IUsedApp = {
 export type IMachineItem = {
   machineId: number
   belong: number
+  isBan?: boolean
   machine: IMachineInfo
   usedApps: IUsedApp[]
 }

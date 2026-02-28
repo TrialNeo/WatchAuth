@@ -8,6 +8,7 @@ import (
 type Machine struct {
 	MachineId   int         `json:"machineId" gorm:"primaryKey;column:machine_id;not null;unique"`
 	Belong      int         `json:"belong" gorm:"column:belong;not null"` // 在顶层
+	IsBan       bool        `json:"isBan" gorm:"column:is_ban;not null;default:false"`
 	MachineInfo MachineInfo `json:"machine" gorm:"foreignKey:MachineId;constraint:OnDelete:CASCADE"`
 	UsedApps    []UsedApp   `json:"usedApps" gorm:"foreignKey:MachineId;constraint:OnDelete:CASCADE"`
 }

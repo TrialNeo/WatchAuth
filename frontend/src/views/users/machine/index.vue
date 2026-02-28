@@ -80,7 +80,7 @@
         <el-table-column
           :align="TABLE_CONFIG.align"
           label="使用应用"
-          min-width="100"
+          min-width="200"
         >
           <template #default="{ row }">
             <el-tag v-for="app in row.usedApps" :key="app.appId" size="small" style="margin-right: 4px;">
@@ -100,9 +100,27 @@
             />
           </template>
         </el-table-column>
+        <el-table-column
+          :align="TABLE_CONFIG.align"
+          label="封禁状态"
+          min-width="100"
+        >
+          <template #default="{ row }">
+            <BaseTag
+              :text="row.isBan ? '已封禁' : '正常'"
+              :type="row.isBan ? 'danger' : 'success'"
+            />
+          </template>
+        </el-table-column>
         <el-table-column :align="TABLE_CONFIG.align" fixed="right" label="操作" min-width="220">
           <template #default="{ row }">
-            <el-button size="small" type="danger" @click="handleBanMachine(row)">封禁</el-button>
+            <el-button
+              :type="row.isBan ? 'success' : 'danger'"
+              size="small"
+              @click="handleBanMachine(row)"
+            >
+              {{ row.isBan ? '解封' : '封禁' }}
+            </el-button>
             <el-button size="small" type="warning" @click="handleOfflineMachine(row)">下线</el-button>
             <el-button size="small" type="primary" @click="handleReadLog(row)">读取日志</el-button>
           </template>

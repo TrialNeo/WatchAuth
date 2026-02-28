@@ -2,6 +2,7 @@
   {
     "machineId": 1,
     "belong": 10001,
+    "isBan": false,
     "machine": {
       "platform": "Windows 11 Pro",
       "arch": "x64",
