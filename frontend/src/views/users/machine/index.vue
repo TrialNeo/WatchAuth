@@ -132,10 +132,9 @@
     <LogDialog
       v-if="logDialogVisible"
       v-model:dialogVisible="logDialogVisible"
-      :appLogs="appLogs"
       :machineId="currentMachineId"
-      :networkLogs="networkLogs"
-      :systemLogs="systemLogs"
+      :logs="logs"
+      :machineName="currentMachineName"
     />
 
   </div>
@@ -146,7 +145,7 @@ import {onMounted, ref} from 'vue'
 import {ElMessage} from 'element-plus'
 import {TABLE_CONFIG} from '@/config/elementConfig.ts'
 import {MachineManager} from '@/api/userManager.ts'
-import type {IMachineItem} from '@/types/userManager/user.ts'
+import type {ILogItem, IMachineItem} from '@/types/userManager/user.ts'
 import BaseTag from '@/components/tag/BaseTag.vue'
 import LogDialog from '@/components/machine/LogDialog.vue'
 import SearchForm from '@/components/machine/SearchForm.vue'
@@ -164,10 +163,8 @@ const machineList = ref<IMachineItem[]>([])
 // 日志对话框相关
 const logDialogVisible = ref(false)
 const currentMachineId = ref(0)
-const activeLogTab = ref('system')
-const systemLogs = ref('')
-const appLogs = ref('')
-const networkLogs = ref('')
+const currentMachineName = ref('')
+const logs = ref<ILogItem[]>([])
 
 const getMachineList = async () => {
   try {
@@ -230,16 +227,15 @@ const handleReadLog = async (row: IMachineItem) => {
     }
     ElMessage.success('读取日志成功')
 
-    // 设置当前机器ID
+    // 设置当前机器ID和名称
     currentMachineId.value = row.machineId
+    currentMachineName.value = row.machine.machineName
 
     // 处理日志数据，显示在对话框中
     console.log('日志数据:', resp.data.data)
 
-    // 模拟日志数据，实际项目中应该根据 API 返回的数据来设置
-    systemLogs.value = `[2026-02-27 10:00:00] 系统启动\n[2026-02-27 10:01:00] 加载配置文件\n[2026-02-27 10:02:00] 初始化服务\n[2026-02-27 10:03:00] 系统正常运行`
-    appLogs.value = `[2026-02-27 10:05:00] 应用启动\n[2026-02-27 10:06:00] 加载插件\n[2026-02-27 10:07:00] 应用正常运行\n[2026-02-27 10:08:00] 处理用户请求`
-    networkLogs.value = `[2026-02-27 10:00:00] 网络连接建立\n[2026-02-27 10:01:00] 连接服务器成功\n[2026-02-27 10:02:00] 心跳包发送成功\n[2026-02-27 10:03:00] 数据同步完成`
+    // 设置日志数据
+    logs.value = resp.data.data || []
 
     // 显示日志对话框
     logDialogVisible.value = true

@@ -1,28 +1,57 @@
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    "data": [
-      {
-        "time": "2026-02-21T18:25:22Z",
-        "type": "info",
-        "appVersion": "1.2.2",
-        "trainId": 1,
-        "spanId": 2,
-        "module": "test",
-        "func": "SayLoveU",
-        "msg": "lol"
-      },
-      {
-        "time": "2026-02-22T18:25:22Z",
-        "type": "info",
-        "appVersion": "1.2.1",
-        "trainId": 1,
-        "spanId": 3,
-        "module": "test",
-        "func": "SayLoveU",
-        "msg": "lol"
-      }
-    ]
+[
+  {
+    "time": "2026-02-21T18:25:23Z",
+    "type": "info",
+    "appId": 10001,
+    "appVersionId": "1.2.2",
+    "trainId": 1,
+    "spanId": 2,
+    "module": "test",
+    "funcName": "SayLoveU",
+    "msg": "lol"
+  },
+  {
+    "time": "2026-02-22T18:25:25Z",
+    "appId": 10001,
+    "type": "debug",
+    "appVersionId": "1.2.1",
+    "trainId": 1,
+    "spanId": 3,
+    "module": "test",
+    "funcName": "SayLoveU",
+    "msg": "lol"
+  },
+  {
+    "time": "2026-02-22T18:25:26Z",
+    "appId": 10001,
+    "type": "warning",
+    "appVersionId": "1.2.1",
+    "trainId": 1,
+    "spanId": 3,
+    "module": "test",
+    "funcName": "SayLoveU",
+    "msg": "lol"
+  },
+  {
+    "time": "2026-02-22T18:25:27Z",
+    "appId": 10001,
+    "type": "error",
+    "appVersionId": "1.2.1",
+    "trainId": 1,
+    "spanId": 3,
+    "module": "test",
+    "funcName": "SayLoveU",
+    "msg": "lol"
+  },
+  {
+    "time": "2026-02-22T18:25:28Z",
+    "appId": 10001,
+    "type": "error",
+    "appVersionId": "1.2.1",
+    "trainId": 1,
+    "spanId": 3,
+    "module": "test",
+    "funcName": "SayLoveU",
+    "msg": "lol"
   }
-}
+]

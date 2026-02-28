@@ -35,7 +35,7 @@ export const MachineManager = {
     })
   },
   readLog(machineId: number) {
-    return request.post<ICommonResponse<{ systemLogs: string; appLogs: string; networkLogs: string }>>('admin/machine/readLog', {
+    return request.post<ILogListResp>('admin/machine/readLog', {
       machineId: machineId,
     })
   }

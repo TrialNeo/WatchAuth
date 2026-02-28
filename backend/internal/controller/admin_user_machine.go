@@ -45,6 +45,6 @@ func (u *UserMachineController) ReadLog(c *fiber.Ctx) error {
 	if err := c.BodyParser(&reqParam); err != nil {
 		return Respond(c, errMsg.ERRORInvalidParams, nil)
 	}
-	code := u.Service.ReadLog(reqParam.MachineId)
-	return Respond(c, code, nil)
+	code, response := u.Service.ReadLog(reqParam.MachineId, 50)
+	return Respond(c, code, response)
 }

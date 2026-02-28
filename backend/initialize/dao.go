@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// ConnectDB 连接数据库
 func ConnectDB() {
 	DataBase, err := gorm.Open(postgres.Open(
 		fmt.Sprintf(

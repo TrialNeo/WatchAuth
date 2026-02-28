@@ -6,6 +6,7 @@ import (
 	"Diggpher/internal/service/errMsg"
 	"errors"
 	"gorm.io/gorm"
+	"strconv"
 	"time"
 )
 
@@ -40,7 +41,7 @@ type UsedApps struct {
 type MachineItem struct {
 	MachineId int  `json:"machineId"`
 	Belong    int  `json:"belong"`
-	IsBan     bool `json:"isBan" default:false;`
+	IsBan     bool `json:"isBan"`
 	Machine   struct {
 		Platform    string `json:"platform"`
 		Arch        string `json:"arch"`
@@ -121,10 +122,24 @@ func (u *AdminUserMachineService) Ban(machineId int) (code uint) {
 	return
 }
 
-func (u *AdminUserMachineService) ReadLog(machineId int) (code uint) {
+type MachineReportItem struct {
+	Time         time.Time `json:"time"`
+	Type         string    `json:"type"`
+	AppId        uint      `json:"appId"`
+	AppVersionId string    `json:"appVersionId"`
+	TrainId      uint      `json:"trainId"`
+	SpanId       uint      `json:"spanId"`
+	Module       string    `json:"module"`
+	FuncName     string    `json:"funcName"`
+	Msg          string    `json:"msg"`
+}
+
+// ReadLog 读取上报日志
+func (u *AdminUserMachineService) ReadLog(machineId int, num int) (code uint, reports []*MachineReportItem) {
 	//先检查一下是否存在再说
 	var (
-		machineDao dao.Machine
+		machineDao    dao.Machine
+		machineLogDao = make([]*dao.MachineLog, 0)
 	)
 	res := global.DataBase.Where("machine_id = ?", machineId).First(&machineDao)
 	if errors.Is(res.Error, gorm.ErrRecordNotFound) {
@@ -135,10 +150,24 @@ func (u *AdminUserMachineService) ReadLog(machineId int) (code uint) {
 		code = errMsg.ERRORDataBaseErr
 		return
 	}
-	res = global.DataBase.Model(machineDao).Update("is_ban", !machineDao.IsBan)
-	if res.Error != nil {
-		code = errMsg.ERRORDataBaseErr
-		return
+	res = global.DataBase.Where("machine_id = ?", machineId).
+		Limit(num).Order("time DESC").
+		Find(&machineLogDao)
+	if res.RowsAffected > 0 {
+		reports = make([]*MachineReportItem, 0, res.RowsAffected)
+		for _, report := range machineLogDao {
+			reports = append(reports, &MachineReportItem{
+				Time:         report.Time,
+				Type:         report.Type,
+				AppId:        report.AppId,
+				AppVersionId: strconv.Itoa(int(report.AppVersionId)),
+				TrainId:      report.TrainId,
+				SpanId:       report.SpanId,
+				Module:       report.Module,
+				FuncName:     report.FuncName,
+				Msg:          report.Msg,
+			})
+		}
 	}
 	return
 }

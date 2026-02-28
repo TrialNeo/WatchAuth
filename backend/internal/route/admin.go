@@ -40,7 +40,8 @@ func bindAdminRoute(admin fiber.Router) {
 			router.
 				Post("/auth", userCtrl.Auth).
 				Get("/list", userCtrl.List).
-				Post("/ban", userCtrl.Ban)
+				Post("/ban", userCtrl.Ban).
+				Post("/readLog", userCtrl.ReadLog)
 		})
 	})
 

@@ -62,5 +62,21 @@ export type IMachineItem = {
   usedApps: IUsedApp[]
 }
 
+// 日志记录类型
+export type ILogItem = {
+  time: string
+  type: 'info' | 'debug' | 'warning' | 'error'
+  appId: number
+  appVersionId: string
+  trainId: number
+  spanId: number
+  module: string
+  funcName: string
+  msg: string
+}
+
 // 机器列表响应类型 - data 直接是数组
 export type IMachineListResp = ICommonResponse<IMachineItem[]>
+
+// 日志列表响应类型 - data 直接是数组
+export type ILogListResp = ICommonResponse<ILogItem[]>
