@@ -4,6 +4,7 @@ import (
 	"Diggpher/global"
 	"Diggpher/internal/dao"
 	"Diggpher/internal/service/errMsg"
+	"errors"
 	"gorm.io/gorm"
 	"time"
 )
@@ -95,5 +96,49 @@ func (u *AdminUserMachineService) List() (code uint, response []*MachineItem) {
 		})
 	}
 	code = errMsg.SUCCESS
+	return
+}
+
+func (u *AdminUserMachineService) Ban(machineId int) (code uint) {
+	//先检查一下是否存在再说
+	var (
+		machineDao dao.Machine
+	)
+	res := global.DataBase.Where("machine_id = ?", machineId).First(&machineDao)
+	if errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		code = errMsg.ErrorAdminAppVerUsed
+		return
+	}
+	if res.Error != nil {
+		code = errMsg.ERRORDataBaseErr
+		return
+	}
+	res = global.DataBase.Model(machineDao).Update("is_ban", !machineDao.IsBan)
+	if res.Error != nil {
+		code = errMsg.ERRORDataBaseErr
+		return
+	}
+	return
+}
+
+func (u *AdminUserMachineService) ReadLog(machineId int) (code uint) {
+	//先检查一下是否存在再说
+	var (
+		machineDao dao.Machine
+	)
+	res := global.DataBase.Where("machine_id = ?", machineId).First(&machineDao)
+	if errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		code = errMsg.ErrorAdminAppVerUsed
+		return
+	}
+	if res.Error != nil {
+		code = errMsg.ERRORDataBaseErr
+		return
+	}
+	res = global.DataBase.Model(machineDao).Update("is_ban", !machineDao.IsBan)
+	if res.Error != nil {
+		code = errMsg.ERRORDataBaseErr
+		return
+	}
 	return
 }

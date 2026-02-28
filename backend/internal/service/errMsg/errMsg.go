@@ -22,6 +22,11 @@ const (
 	ErrorAdminAppVerUsed   = 20002
 )
 
+// admin_machine模块
+const (
+	ErrorMachineNotFound = 40000
+)
+
 var codeMsg = map[uint]string{
 	ERROR:              "服务器内部错误",
 	ERRORInvalidParams: "非法参数",
@@ -33,6 +38,8 @@ var codeMsg = map[uint]string{
 	ErrorAdminAppDelDBFail: "数据异常",
 	ErrorAdminAppNotFound:  "应用不存在",
 	ErrorAdminAppVerUsed:   "该版本号已被使用",
+
+	ErrorMachineNotFound: "机器不存在",
 }
 
 func GetErrMsg(code uint) string {
