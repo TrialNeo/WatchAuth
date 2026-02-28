@@ -61,7 +61,5 @@ export type IMachineItem = {
   usedApps: IUsedApp[]
 }
 
-// 机器列表响应类型
-export type IMachineListResp = ICommonResponse<{
-  list: IMachineItem[]
-}>
+// 机器列表响应类型 - data 直接是数组
+export type IMachineListResp = ICommonResponse<IMachineItem[]>

@@ -21,21 +21,21 @@ export const userManager = {
 }
 
 export const MachineManager = {
-  list() {
-    return request.post<IMachineListResp>('admin/machine/list', null)
+  list(params?: { deviceId: string; belong: string }) {
+    return request.get<ICommonResponse<IMachineListResp>>('admin/machine/list', params)
   },
   ban(machineId: number) {
-    return request.post<IMachineListResp>('admin/machine/ban', {
+    return request.post<ICommonResponse<null>>('admin/machine/ban', {
       machineId: machineId,
     })
   },
   offline(machineId: number) {
-    return request.post<IMachineListResp>('admin/machine/offline', {
+    return request.post<ICommonResponse<null>>('admin/machine/offline', {
       machineId: machineId,
     })
   },
   readLog(machineId: number) {
-    return request.post<IMachineListResp>('admin/machine/readLog', {
+    return request.post<ICommonResponse<{ systemLogs: string; appLogs: string; networkLogs: string }>>('admin/machine/readLog', {
       machineId: machineId,
     })
   }

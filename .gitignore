@@ -1,6 +1,7 @@
 .idea.
 .vscode
 .github
+design
 #backend
 *.exe
 config.yaml

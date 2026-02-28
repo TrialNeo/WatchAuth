@@ -56,7 +56,10 @@ func (u *AdminUserMachineService) List() (code uint, response []*MachineItem) {
 	var (
 		machinesDao = make([]*dao.Machine, 0)
 	)
-	res := global.DataBase.Find(machinesDao)
+	res := global.DataBase.
+		Preload("MachineInfo").
+		Preload("UsedApps").
+		Find(&machinesDao)
 	if res.Error != nil {
 		code = errMsg.ERRORDataBaseErr
 		return

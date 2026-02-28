@@ -100,9 +100,9 @@
             />
           </template>
         </el-table-column>
-        <el-table-column :align="TABLE_CONFIG.align" label="操作" min-width="150">
+        <el-table-column :align="TABLE_CONFIG.align" fixed="right" label="操作" min-width="220">
           <template #default="{ row }">
-            <el-button size="small" @click="handleBanMachine(row)">封禁</el-button>
+            <el-button size="small" type="danger" @click="handleBanMachine(row)">封禁</el-button>
             <el-button size="small" type="warning" @click="handleOfflineMachine(row)">下线</el-button>
             <el-button size="small" type="primary" @click="handleReadLog(row)">读取日志</el-button>
           </template>
@@ -112,6 +112,7 @@
 
     <!-- 日志显示对话框 -->
     <LogDialog
+      v-if="logDialogVisible"
       v-model:dialogVisible="logDialogVisible"
       :appLogs="appLogs"
       :machineId="currentMachineId"
@@ -136,8 +137,8 @@ defineOptions({ name: 'MachineManager' })
 
 // 查询表单
 const queryForm = ref({
-  machineName: '',
   deviceId: '',
+  belong: '',
 })
 
 const machineList = ref<IMachineItem[]>([])
@@ -152,12 +153,12 @@ const networkLogs = ref('')
 
 const getMachineList = async () => {
   try {
-    const resp = await MachineManager.list()
+    const resp = await MachineManager.list(queryForm.value)
     if (resp.data.code !== 0) {
       ElMessage.error(resp.data.msg)
       return
     }
-    machineList.value = resp.data.data?.list || []
+    machineList.value = resp.data.data || []
   } catch (error) {
     ElMessage.error('获取机器列表失败')
     console.error('获取机器列表失败:', error)
@@ -166,8 +167,8 @@ const getMachineList = async () => {
 
 const resetForm = () => {
   queryForm.value = {
-    machineName: '',
     deviceId: '',
+    belong: '',
   }
   getMachineList()
 }
