@@ -185,7 +185,7 @@ const handleLogin = async () => {
       localStorage.removeItem(REMEMBER_USERNAME_KEY)
     }
     // 添加登录日志
-    router.push('/')
+    router.push('/dashboard/analysis')
 
   } finally {
     loading.value = false

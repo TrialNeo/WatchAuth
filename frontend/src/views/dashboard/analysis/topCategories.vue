@@ -1,6 +1,6 @@
-<!-- 热销商品类目 TOP 5 -->
+<!-- 热门应用 TOP 5 -->
 <template>
-  <BaseCard title="热销商品类目 TOP 5">
+  <BaseCard title="热门应用 TOP 5">
     <div class="h-65 w-full">
       <VChart :option="topCategoriesOption" autoresize />
     </div>
@@ -46,21 +46,21 @@ const topCategoriesOption = computed(() => {
     },
     yAxis: {
       type: 'category',
-      data: ['电子产品', '户外运动', '居家生活', '美妆个护', '服装鞋帽'],
+      data: ['应用 A', '应用 B', '应用 C', '应用 D', '应用 E'],
       axisLine: { show: false },
       axisTick: { show: false },
       axisLabel: { color: style.getPropertyValue('--el-text-color-regular') },
     },
     series: [
       {
-        name: '销量 (k)',
+        name: '使用次数',
         type: 'bar',
         barWidth: '40%',
         itemStyle: {
           borderRadius: [0, 20, 20, 0],
           color: style.getPropertyValue('--el-color-primary'),
         },
-        data: [820, 732, 601, 534, 490],
+        data: [1280, 950, 820, 650, 480],
       },
     ],
   }

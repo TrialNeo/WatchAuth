@@ -13,27 +13,13 @@
     "isBuiltIn": true,
     "children": [
       {
-        "id": "menu_12",
-        "type": "menu",
-        "path": "/dashboard/home",
-        "title": "工作台",
-        "icon": "HOutline:ComputerDesktopIcon",
-        "parentId": "menu_1",
-        "order": 0,
-        "status": "active",
-        "createTime": "2025-12-12 14:00:12",
-        "updateTime": "2025-12-12 14:00:12",
-        "isBuiltIn": true,
-        "children": []
-      },
-      {
         "id": "menu_13",
         "type": "menu",
         "path": "/dashboard/analysis",
         "title": "分析页",
         "icon": "HOutline:ChartBarIcon",
         "parentId": "menu_1",
-        "order": 1,
+        "order": 0,
         "status": "active",
         "createTime": "2025-12-12 14:00:12",
         "updateTime": "2025-12-12 14:00:12",

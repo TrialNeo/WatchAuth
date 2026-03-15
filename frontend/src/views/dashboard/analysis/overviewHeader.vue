@@ -7,11 +7,11 @@
           <div class="flex items-center justify-between gap-4 px-3">
             <div class="flex flex-col gap-4 py-2.5">
               <div class="text-sm font-semibold text-(--el-color-primary)">Business Overview</div>
-              <h2 class="text-2xl font-bold">全球业务运营中心</h2>
+              <h2 class="text-2xl font-bold">授权管理中心</h2>
               <p class="text-sm text-(--el-text-color-regular) md:max-w-80">
-                <span>本月业绩增长势头强劲，已完成季度目标的</span>
-                <span class="font-semibold leading-1.5 text-(--el-color-primary)"> 76% </span>
-                <span>，建议加大对移动端大促活动的资源投入</span>
+                <span>本月授权管理系统运行稳定，</span>
+                <span class="font-semibold leading-1.5 text-(--el-color-primary)">在线机器 128 台</span>
+                <span>，系统运行正常</span>
               </p>
               <div class="flex gap-4 items-center">
                 <el-button round type="primary">生成月报</el-button>
@@ -61,25 +61,25 @@ const menuStore = useMenuStore()
 // 核心运营指标
 const businessStats = ref([
   {
-    label: 'Total Revenue',
-    value: '￥1,284,500',
-    trend: '+15.2%',
-    icon: 'HSolid:BanknotesIcon',
+    label: '在线机器',
+    value: '128',
+    trend: '+12',
+    icon: 'HSolid:ComputerDesktopIcon',
     type: 'blue',
   },
   {
-    label: 'Total Orders',
-    value: '8,429',
-    trend: '+8.4%',
-    icon: 'HSolid:ShoppingCartIcon',
-    type: 'orange',
+    label: '累积消费',
+    value: '￥1,284,500',
+    trend: '+15.2%',
+    icon: 'HSolid:BanknotesIcon',
+    type: 'green',
   },
   {
-    label: 'New Members',
-    value: '1,562',
-    trend: '+22.1%',
-    icon: 'HSolid:UserPlusIcon',
-    type: 'indigo',
+    label: '用户总数',
+    value: '1,024',
+    trend: '+23',
+    icon: 'HSolid:UsersIcon',
+    type: 'purple',
   },
 ])
 </script>
@@ -92,10 +92,13 @@ const businessStats = ref([
 .blue {
   background: linear-gradient(135deg, #5bbff9 0%, #2563eb 100%);
 }
+.green {
+  background: linear-gradient(135deg, #86efac 0%, #16a34a 100%);
+}
+.purple {
+  background: linear-gradient(135deg, #c4b5fd 0%, #7e22ce 100%);
+}
 .orange {
   background: linear-gradient(135deg, #f99c7d 0%, #ea580c 100%);
-}
-.indigo {
-  background: linear-gradient(135deg, #818cf8 0%, #4f46e5 100%);
 }
 </style>

@@ -42,9 +42,9 @@ export const useTabsStore = defineStore('tabs', () => {
     if (!route.meta?.keepAlive) return
 
     // 如果当前菜单列表中有首页，则添加首页标签页
-    if (!tabs.value.some((tab) => tab.path === '/dashboard/home')) {
+    if (!tabs.value.some((tab) => tab.path === '/dashboard/analysis')) {
       const menuStore = useMenuStore()
-      const homeMenu = findMenuByPath(menuStore.menuList, '/dashboard/home')
+      const homeMenu = findMenuByPath(menuStore.menuList, '/dashboard/analysis')
       if (homeMenu) {
         tabs.value.unshift({
           path: homeMenu.path,
