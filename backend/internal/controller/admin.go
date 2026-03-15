@@ -22,7 +22,7 @@ func (a *AdminController) Login(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"msg": err.Error()})
 	}
 	resp := a.Service.Login(login.Username, login.Password, c.IP())
-	return Respond(c, resp.Code, resp.ErrMsg)
+	return Respond(c, resp.Code, resp)
 }
 
 type menu struct {
