@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import {defineEmits, defineProps, ref} from 'vue'
+import {ref} from 'vue'
 import type {FormInstance} from 'element-plus'
 
 const props = defineProps<{

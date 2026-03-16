@@ -8,6 +8,11 @@ config.yaml
 config.*.yaml
 
 
+dist.zip
+dist
+
+
+
 # frontend
 # Logs
 logs

@@ -95,8 +95,8 @@
         >
           <template #default="{ row }">
             <BaseTag
-              :text="row.usedApps.some(app => app.online) ? '在线' : '离线'"
-              :type="row.usedApps.some(app => app.online) ? 'success' : 'danger'"
+              :text="row.usedApps.some((app: IUsedApp) => app.online) ? '在线' : '离线'"
+              :type="row.usedApps.some((app: IUsedApp) => app.online) ? 'success' : 'danger'"
             />
           </template>
         </el-table-column>
@@ -145,7 +145,7 @@ import {onMounted, ref} from 'vue'
 import {ElMessage} from 'element-plus'
 import {TABLE_CONFIG} from '@/config/elementConfig.ts'
 import {MachineManager} from '@/api/userManager.ts'
-import type {ILogItem, IMachineItem} from '@/types/userManager/user.ts'
+import type {ILogItem, IMachineItem, IUsedApp} from '@/types/userManager/user.ts'
 import BaseTag from '@/components/tag/BaseTag.vue'
 import LogDialog from '@/components/machine/LogDialog.vue'
 import SearchForm from '@/components/machine/SearchForm.vue'

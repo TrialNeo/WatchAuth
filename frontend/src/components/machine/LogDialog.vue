@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-import {defineEmits, defineProps, ref, watch} from 'vue'
+import {ref, watch} from 'vue'
 import {ElMessage} from 'element-plus'
 import type {ILogItem} from '@/types/userManager/user.ts'
 
