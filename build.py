@@ -1,3 +1,4 @@
+import platform
 import shutil
 import subprocess
 from pathlib import Path
@@ -6,6 +7,10 @@ backend_path = Path("./backend")
 frontend_path = Path("./frontend")
 dst = Path("./dist")
 backend_build_exe = "watchauth-backend.exe"
+npm = "npm"
+if platform.system() == "Windows":
+    npm = "npm.cmd"
+
 
 print(f"building backend,backend_path={backend_path}")
 res = subprocess.run(
@@ -29,14 +34,14 @@ print()
 
 print(f"building frontend,frontend_path={frontend_path}")
 res = subprocess.run(
-    args=["npm.cmd", "run", "build-only"],
+    args=[npm, "run", "build-only"],
     cwd=frontend_path,
-    capture_output=True,
-    text=True
+    capture_output=False
 )
 if res.returncode == 0:
     dst_frontend = dst / "frontend"
     dst_frontend.mkdir(exist_ok=True)
-    shutil.copy(frontend_path / "dist", dst_frontend)
+    shutil.copytree(frontend_path / "dist", dst_frontend,dirs_exist_ok=True)
+    print("building frondend Successfully!")
 else:
-    print("building frontend failed!")
+    print("building frontend failed!",res.stderr)
