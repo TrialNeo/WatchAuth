@@ -3,6 +3,7 @@
 .github
 design
 #backend
+.venv
 *.exe
 config.yaml
 config.*.yaml
