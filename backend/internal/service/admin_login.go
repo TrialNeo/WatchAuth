@@ -4,7 +4,6 @@ import (
 	"Diggpher/global"
 	"Diggpher/internal/dao"
 	"Diggpher/internal/service/errMsg"
-	"Diggpher/pkg/crypto"
 	"Diggpher/pkg/middleware/auth"
 	"Diggpher/pkg/utils"
 	"errors"
@@ -35,7 +34,7 @@ func (*AdminService) Login(username, password, loginIp string) *LoginResp {
 	}
 
 	//密码错误
-	if crypto.PswEnc(password) != admin.Password {
+	if password != admin.Password {
 		resp.Code = errMsg.ErrorAdminPswError
 		resp.ErrMsg = errMsg.GetErrMsg(resp.Code)
 		return resp

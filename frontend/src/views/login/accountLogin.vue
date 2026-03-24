@@ -94,6 +94,7 @@
 
 <script lang="ts" setup>
 import {login} from '@/api/login'
+import {encryptPassword} from '@/utils/crypto'
 import type {FormInstance, FormRules} from 'element-plus'
 import {ElMessage} from 'element-plus'
 import type {ILoginMode} from '@/types/login'
@@ -173,7 +174,12 @@ const handleLogin = async () => {
   await loginFormRef.value?.validate()
   loading.value = true
   try {
-    const {data: res} = await login(loginForm.value)
+    // 对密码进行加密
+    const encryptedForm = {
+      ...loginForm.value,
+      password: encryptPassword(loginForm.value.password)
+    }
+    const {data: res} = await login(encryptedForm)
     if (res.code !== 0) {
       ElMessage.error(res.msg)
       return
