@@ -1,5 +1,7 @@
 package global
 
+import "crypto/rsa"
+
 type Config struct {
 	Web struct {
 		Port int
@@ -18,3 +20,7 @@ type Config struct {
 		Password string
 	}
 }
+
+var (
+	RsaPriPem *rsa.PrivateKey
+)
