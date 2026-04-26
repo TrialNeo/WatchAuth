@@ -29,6 +29,12 @@ export const staticRoutes = [
         meta: { title: '个人中心', icon: 'HOutline:UserCircleIcon', keepAlive: true },
       },
       {
+        path: '/statistics',
+        name: 'StatisticsView',
+        component: () => import('@/views/dashboard/statistics/index.vue'),
+        meta: { title: '数据统计', icon: 'HOutline:ChartBarSquareIcon', keepAlive: true },
+      },
+      {
         path: '/exception/403',
         name: '403',
         component: () => import('@/views/exception/403/index.vue'),
