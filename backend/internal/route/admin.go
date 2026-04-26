@@ -38,6 +38,15 @@ func bindAdminRoute(admin fiber.Router) {
 		router.Route("/user", func(router fiber.Router) {
 
 		})
+		router.Route("/agent", func(router fiber.Router) {
+			router.
+				Get("/list", adminCtrl.GetAgentList).
+				Get("/:id", adminCtrl.GetAgent).
+				Post("/create", adminCtrl.CreateAgent).
+				Post("/update", adminCtrl.UpdateAgent).
+				Post("/delete", adminCtrl.DeleteAgent)
+		})
+
 		router.Route("/machine", func(router fiber.Router) {
 			router.
 				Post("/auth", userCtrl.Auth).

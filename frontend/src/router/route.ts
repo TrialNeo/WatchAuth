@@ -41,6 +41,12 @@ export const staticRoutes = [
         meta: { title: '授权管理', icon: 'HOutline:KeyIcon', keepAlive: true },
       },
       {
+        path: '/agent',
+        name: 'AgentView',
+        component: () => import('@/views/agent/index.vue'),
+        meta: { title: '代理管理', icon: 'HOutline:UserGroupIcon', keepAlive: true },
+      },
+      {
         path: '/exception/403',
         name: '403',
         component: () => import('@/views/exception/403/index.vue'),

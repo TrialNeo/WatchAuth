@@ -27,6 +27,15 @@ const (
 	ErrorMachineNotFound = 40000
 )
 
+// agent模块
+const (
+	ERRORAgentNotFound       = 50000
+	ERRORAgentParentNotFound = 50001
+	ERRORAgentParentFrozen   = 50002
+	ERRORAgentLevelLimit     = 50003
+	ERRORAgentHasChildren    = 50004
+)
+
 var codeMsg = map[uint]string{
 	ERROR:              "服务器内部错误",
 	ERRORInvalidParams: "非法参数",
@@ -40,6 +49,12 @@ var codeMsg = map[uint]string{
 	ErrorAdminAppVerUsed:   "该版本号已被使用",
 
 	ErrorMachineNotFound: "机器不存在",
+
+	ERRORAgentNotFound:       "代理不存在",
+	ERRORAgentParentNotFound: "上级代理不存在",
+	ERRORAgentParentFrozen:   "上级代理已冻结",
+	ERRORAgentLevelLimit:     "代理层级已达上限(最多3级)",
+	ERRORAgentHasChildren:    "该代理下存在子代理，无法删除",
 }
 
 func GetErrMsg(code uint) string {
