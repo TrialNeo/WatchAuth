@@ -1,8 +1,6 @@
 package dao
 
-import (
-	"Diggpher/global"
-)
+import "Diggpher/global"
 
 // BindDao 对外接口，dao绑定
 func BindDao() {
@@ -13,6 +11,7 @@ func BindDao() {
 		new(App), new(Version),
 		new(Machine), new(MachineInfo), new(UsedApp), new(MachineLog),
 		new(License),
+		new(User),
 	)
 	if err != nil {
 		panic(err)

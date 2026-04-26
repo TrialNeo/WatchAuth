@@ -7,4 +7,5 @@ func BindRoute() {
 	api := global.WebApp.Group("/api")
 	bindSdkRoute(api.Group("/sdk"))
 	bindAdminRoute(api)
+	bindUserRoute(api)
 }

@@ -9,6 +9,9 @@ require (
 	github.com/gofiber/fiber/v2 v2.52.11
 	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/spf13/viper v1.21.0
+	go.uber.org/zap v1.27.1
+	golang.org/x/crypto v0.46.0
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.1
 )
@@ -40,8 +43,8 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.69.0 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/crypto v0.46.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 	golang.org/x/text v0.33.0 // indirect
