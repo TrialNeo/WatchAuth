@@ -2,12 +2,9 @@ package initialize
 
 import (
 	"Diggpher/global"
-	"crypto/rsa"
-	"crypto/x509"
-	"encoding/pem"
+	"Diggpher/pkg/logger"
 	"fmt"
 	"github.com/spf13/viper"
-	"os"
 )
 
 func LoadConfigs() {
@@ -23,17 +20,25 @@ func LoadConfigs() {
 		return
 	}
 
-	//载入rsa_pem
-	pkey, err := os.ReadFile("./configs/rsa_pri.pem")
-	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+	// 初始化日志
+	logConfig := &logger.Config{
+		Level:   global.CONFIG.Logger.Level,
+		Console: global.CONFIG.Logger.Console,
+		Dir:     global.CONFIG.Logger.Dir,
 	}
-	block, _ := pem.Decode(pkey)
-	if block == nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
-	}
-	privateKey, err := x509.ParsePKCS8PrivateKey(block.Bytes)
+	logger.InitLogger(logConfig)
 
-	global.RsaPriPem = privateKey.(*rsa.PrivateKey)
+	//载入rsa_pem
+	//pkey, err := os.ReadFile("./configs/rsa_pri.pem")
+	//if err != nil {
+	//	panic(fmt.Errorf("Fatal error config file: %s \n", err))
+	//}
+	//block, _ := pem.Decode(pkey)
+	//if block == nil {
+	//	panic(fmt.Errorf("Fatal error config file: %s \n", err))
+	//}
+	//privateKey, err := x509.ParsePKCS8PrivateKey(block.Bytes)
+	//
+	//global.RsaPriPem = privateKey.(*rsa.PrivateKey)
 
 }

@@ -6,22 +6,41 @@ import (
 )
 
 type Response[T any] struct {
-	Code    uint        `json:"code"`
+	Code    uint        `json:"code,omitempty"`
 	Message string      `json:"msg,omitempty"`
 	Data    interface{} `json:"data,omitempty"`
 }
 
-// Respond 统一返回，汇总
-func Respond(c *fiber.Ctx, code uint, data interface{}) error {
-	if code != errMsg.SUCCESS {
-		return c.Status(fiber.StatusOK).JSON(&Response[any]{
-			Code:    code,
-			Message: errMsg.GetErrMsg(code),
+type RespondIMP struct {
+	c    *fiber.Ctx
+	code uint
+}
+
+func newRespondIMP(c *fiber.Ctx) *RespondIMP {
+	return &RespondIMP{c: c}
+}
+
+func (r *RespondIMP) withCode(code uint) *RespondIMP {
+	r.code = code
+	return r
+}
+
+func (r *RespondIMP) Respond(data any) error {
+	if r.code != errMsg.SUCCESS {
+		return r.c.Status(fiber.StatusOK).JSON(&Response[any]{
+			Code:    r.code,
+			Message: errMsg.GetErrMsg(r.code),
 		})
 	}
-	return c.Status(fiber.StatusOK).JSON(&Response[any]{
-		Code:    code,
-		Message: errMsg.GetErrMsg(code),
+	return r.c.Status(fiber.StatusOK).JSON(&Response[any]{
+		Code:    r.code,
+		Message: errMsg.GetErrMsg(r.code),
 		Data:    data,
 	})
+}
+
+// Respond 统一返回，汇总（旧版，向后兼容）
+func Respond(c *fiber.Ctx, code uint, data interface{}) error {
+	r := newRespondIMP(c)
+	return r.withCode(code).Respond(data)
 }

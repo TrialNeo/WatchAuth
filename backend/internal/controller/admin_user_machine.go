@@ -7,44 +7,48 @@ import (
 
 // Auth 给机器进行授权
 func (u *UserMachineController) Auth(c *fiber.Ctx) error {
-	reqParam := struct {
+	var req struct {
 		UserId   int    `json:"userId"`
 		Appid    int    `json:"appId"`
 		DeviceId string `json:"deviceId"`
-	}{}
-	if err := c.BodyParser(&reqParam); err != nil {
-		return Respond(c, errMsg.ERRORInvalidParams, nil)
 	}
-	if err := u.Service.Auth(reqParam.Appid, reqParam.DeviceId); err != nil {
-		return Respond(c, errMsg.ERROR, nil)
+	re := newRespondIMP(c)
+	if err := c.BodyParser(&req); err != nil {
+		return re.withCode(errMsg.ERRORInvalidParams).Respond(nil)
 	}
-	return Respond(c, errMsg.SUCCESS, nil)
+	if err := u.Service.Auth(req.Appid, req.DeviceId); err != nil {
+		return re.withCode(errMsg.ERROR).Respond(nil)
+	}
+	return re.withCode(errMsg.SUCCESS).Respond(nil)
 }
 
 func (u *UserMachineController) List(c *fiber.Ctx) error {
-	code, response := u.Service.List()
-	return Respond(c, code, response)
+	re := newRespondIMP(c)
+	code, data := u.Service.List()
+	return re.withCode(code).Respond(data)
 }
 
 func (u *UserMachineController) Ban(c *fiber.Ctx) error {
-	reqParam := struct {
+	var req struct {
 		MachineId int `json:"machineId"`
-	}{}
-	if err := c.BodyParser(&reqParam); err != nil {
-		return Respond(c, errMsg.ERRORInvalidParams, nil)
 	}
-	code := u.Service.Ban(reqParam.MachineId)
-	return Respond(c, code, nil)
+	re := newRespondIMP(c)
+	if err := c.BodyParser(&req); err != nil {
+		return re.withCode(errMsg.ERRORInvalidParams).Respond(nil)
+	}
+	code := u.Service.Ban(req.MachineId)
+	return re.withCode(code).Respond(nil)
 }
 
 // ReadLog 读取机器的上报日志
 func (u *UserMachineController) ReadLog(c *fiber.Ctx) error {
-	reqParam := struct {
+	var req struct {
 		MachineId int `json:"machineId"`
-	}{}
-	if err := c.BodyParser(&reqParam); err != nil {
-		return Respond(c, errMsg.ERRORInvalidParams, nil)
 	}
-	code, response := u.Service.ReadLog(reqParam.MachineId, 50)
-	return Respond(c, code, response)
+	re := newRespondIMP(c)
+	if err := c.BodyParser(&req); err != nil {
+		return re.withCode(errMsg.ERRORInvalidParams).Respond(nil)
+	}
+	code, data := u.Service.ReadLog(req.MachineId, 50)
+	return re.withCode(code).Respond(data)
 }

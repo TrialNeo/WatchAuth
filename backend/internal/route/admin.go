@@ -19,6 +19,7 @@ func bindAdminRoute(admin fiber.Router) {
 	admin.Use(auth.MiddlewareAuth()).Route("/admin", func(router fiber.Router) {
 		// 这是授权之后的使用hh
 		router.Get("/permissions", adminCtrl.Permissions)
+		router.Post("/statistics", adminCtrl.Statistics)
 		router.Route("/app", func(router fiber.Router) {
 			router.
 				Get("/list", adminCtrl.GetAppList).

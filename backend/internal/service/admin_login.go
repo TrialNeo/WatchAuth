@@ -11,16 +11,16 @@ import (
 	"strings"
 )
 
-type LoginResp struct {
+type AdminLoginResp struct {
 	Code   uint   `json:"code"`
 	ErrMsg string `json:"errMsg"`
 	Token  string `json:"token"`
 }
 
-func (*AdminService) Login(username, password, loginIp string) *LoginResp {
+func (*AdminService) Login(username, password, loginIp string) *AdminLoginResp {
 	var (
 		admin dao.Admin
-		resp  = new(LoginResp)
+		resp  = new(AdminLoginResp)
 	)
 
 	if errors.Is(global.DataBase.Where("username = ?", username).First(&admin).Error, gorm.ErrRecordNotFound) {

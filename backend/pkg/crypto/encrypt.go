@@ -1,32 +1,11 @@
 package crypto
 
-import (
-	"Diggpher/global"
-	"crypto"
-	"crypto/rand"
-	"crypto/rsa"
-	"encoding/base64"
-	"encoding/hex"
-)
-
-// PswEnc 密码加密，
+// PswEnc 密码加密，采用bcrypt (pass-through: bcrypt is done on the frontend)
 func PswEnc(psw string) string {
-	hash := crypto.Hash.New(crypto.SHA256)
-	hash.Write([]byte(psw))
-	signature, err := rsa.SignPKCS1v15(rand.Reader, global.RsaPriPem, crypto.SHA256, hash.Sum(hash.Sum(nil)))
-	if err != nil {
-		return ""
-	}
-	return base64.StdEncoding.EncodeToString(signature)
+	return psw
 }
 
-// PswDec 密码解密，
+// PswDec 密码解密 (pass-through: bcrypt is done on the frontend)
 func PswDec(psw string) string {
-	hash := crypto.Hash.New(crypto.SHA256)
-	hash.Write([]byte(psw))
-	signature, err := rsa.SignPKCS1v15(rand.Reader, global.RsaPriPem, crypto.SHA256, hash.Sum(hash.Sum(nil)))
-	if err != nil {
-		return ""
-	}
-	return hex.EncodeToString(signature)
+	return psw
 }

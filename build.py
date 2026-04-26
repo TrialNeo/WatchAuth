@@ -11,7 +11,6 @@ npm = "npm"
 if platform.system() == "Windows":
     npm = "npm.cmd"
 
-
 print(f"building backend,backend_path={backend_path}")
 res = subprocess.run(
     args=["go", "build", "-ldflags", "-s -w", "-o", backend_build_exe],
@@ -32,7 +31,7 @@ else:
 
 print()
 
-print(f"building frontend,frontend_path={frontend_path}")
+print(f"d_path={frontend_path}")
 res = subprocess.run(
     args=[npm, "run", "build-only"],
     cwd=frontend_path,

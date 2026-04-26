@@ -16,14 +16,15 @@ type Machine struct {
 
 // MachineInfo 一对一详情表
 type MachineInfo struct {
-	MachineId   int    `gorm:"primaryKey;autoIncrement;column:machine_id"` // 主键 = 外键
-	Platform    string `json:"platform" gorm:"column:platform"`
-	Arch        string `json:"arch" gorm:"column:arch"`
-	DeviceId    string `json:"deviceId" gorm:"column:device_id;uniqueIndex"`
-	MachineName string `json:"machineName" gorm:"column:machine_name"`
-	Cpu         string `json:"cpu" gorm:"column:cpu"`
-	Gpu         string `json:"gpu" gorm:"column:gpu"`
-	Ram         string `json:"ram" gorm:"column:ram"`
+	MachineId   int       `gorm:"primaryKey;autoIncrement;column:machine_id"` // 主键 = 外键
+	Platform    string    `json:"platform" gorm:"column:platform"`
+	Arch        string    `json:"arch" gorm:"column:arch"`
+	DeviceId    string    `json:"deviceId" gorm:"column:device_id;uniqueIndex"`
+	MachineName string    `json:"machineName" gorm:"column:machine_name"`
+	Cpu         string    `json:"cpu" gorm:"column:cpu"`
+	Gpu         string    `json:"gpu" gorm:"column:gpu"`
+	Ram         string    `json:"ram" gorm:"column:ram"`
+	CreatedAt   time.Time `json:"createdAt" gorm:"column:created_at"`
 }
 
 // UsedApp 一对多子表
