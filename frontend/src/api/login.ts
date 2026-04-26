@@ -1,4 +1,5 @@
 import request from '@/utils/request.ts'
+import type {ICommonResponse} from '@/types/common.ts'
 import type {IUserDetailResponse} from '@/types/system/user.ts'
 import type {ILoginParams, ILoginResponse, IUserPermissionsResponse,} from '@/types/login.ts'
 
@@ -18,4 +19,11 @@ export const userPermissions = () => {
  */
 export const userInfoRequest = () => {
   return request.get<IUserDetailResponse>('/admin/info')
+}
+
+/**
+ * 用户注册
+ */
+export const userRegister = (data: { username: string; password: string; email: string }) => {
+  return request.post<ICommonResponse<{ token: string; userId: number; username: string }>>('/user/register', data)
 }
