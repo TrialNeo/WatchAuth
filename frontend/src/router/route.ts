@@ -35,6 +35,12 @@ export const staticRoutes = [
         meta: { title: '数据统计', icon: 'HOutline:ChartBarSquareIcon', keepAlive: true },
       },
       {
+        path: '/license',
+        name: 'LicenseView',
+        component: () => import('@/views/license/index.vue'),
+        meta: { title: '授权管理', icon: 'HOutline:KeyIcon', keepAlive: true },
+      },
+      {
         path: '/exception/403',
         name: '403',
         component: () => import('@/views/exception/403/index.vue'),
