@@ -47,6 +47,29 @@ func bindAdminRoute(admin fiber.Router) {
 				Post("/delete", adminCtrl.DeleteAgent)
 		})
 
+		router.Route("/config", func(router fiber.Router) {
+			router.
+				Get("/list", adminCtrl.GetSystemConfigs).
+				Post("/update", adminCtrl.UpdateSystemConfig)
+		})
+
+		router.Route("/log", func(router fiber.Router) {
+			router.
+				Get("/list", adminCtrl.GetOperationLogs).
+				Get("/recent", adminCtrl.GetRecentLogs)
+		})
+
+		router.Route("/announcement", func(router fiber.Router) {
+			router.
+				Get("/list", adminCtrl.GetAnnouncementList).
+				Get("/active", adminCtrl.GetActiveAnnouncements).
+				Post("/create", adminCtrl.CreateAnnouncement).
+				Post("/update", adminCtrl.UpdateAnnouncement).
+				Post("/delete", adminCtrl.DeleteAnnouncement)
+		})
+
+		router.Get("/stats/today", adminCtrl.GetTodayStats)
+
 		router.Route("/machine", func(router fiber.Router) {
 			router.
 				Post("/auth", userCtrl.Auth).

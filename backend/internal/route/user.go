@@ -15,6 +15,9 @@ func bindUserRoute(api fiber.Router) {
 	api.Post("/user/register", user.Register)
 	api.Post("/user/login", user.Login)
 
+	// No auth required
+	api.Get("/user/announcement", user.GetActiveAnnouncements)
+
 	// Auth required
 	api.Use("/user", auth.MiddlewareAuth()).Route("/user", func(router fiber.Router) {
 		router.Get("/profile", user.Profile)

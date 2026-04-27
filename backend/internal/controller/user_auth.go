@@ -11,6 +11,15 @@ type UserController struct {
 	Svc *service.UserService
 }
 
+func (u *UserController) GetActiveAnnouncements(c *fiber.Ctx) error {
+	re := newRespondIMP(c)
+	type Data = struct {
+		Announcements []service.AnnouncementItem `json:"list"`
+	}
+	list, code := u.Svc.GetActiveAnnouncements()
+	return re.withCode(code).Respond(&Data{Announcements: list})
+}
+
 func (u *UserController) Register(c *fiber.Ctx) error {
 	var req struct {
 		Username string `json:"username"`

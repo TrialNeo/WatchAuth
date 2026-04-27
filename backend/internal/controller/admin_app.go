@@ -3,10 +3,11 @@ package controller
 import (
 	"Diggpher/internal/service"
 	"Diggpher/internal/service/errMsg"
+	"Diggpher/pkg/middleware/auth"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetAppList 获取现有app详情列表
 func (a *AdminController) GetAppList(c *fiber.Ctx) error {
 	re := newRespondIMP(c)
 	resp := a.Service.GetAppList()
@@ -16,7 +17,6 @@ func (a *AdminController) GetAppList(c *fiber.Ctx) error {
 	return re.withCode(resp.Code).Respond(&Data{Apps: resp.Apps})
 }
 
-// CreateApp 更新app配置信息
 func (a *AdminController) CreateApp(c *fiber.Ctx) error {
 	var req struct {
 		AppId       string  `json:"appid"`
@@ -32,10 +32,12 @@ func (a *AdminController) CreateApp(c *fiber.Ctx) error {
 		return re.withCode(errMsg.ERRORInvalidParams).Respond(nil)
 	}
 	a.Service.CreateApp(req.AppId, req.AppName, req.Description, req.EncType, req.FeeType, req.Status, req.Fee)
+	adminID, _ := auth.GetUserIDFromContext(c)
+	a.Service.LogOperation(adminID, "", "create", "app", req.AppId,
+		"创建应用: "+req.AppName, c.IP())
 	return re.withCode(errMsg.SUCCESS).Respond(nil)
 }
 
-// DeleteApp 删除选中的一些app
 func (a *AdminController) DeleteApp(c *fiber.Ctx) error {
 	var req struct {
 		AppIDs []string `json:"appids"`
@@ -45,10 +47,14 @@ func (a *AdminController) DeleteApp(c *fiber.Ctx) error {
 		return re.withCode(errMsg.ERRORInvalidParams).Respond(nil)
 	}
 	resp := a.Service.DelApp(req.AppIDs)
+	if resp.Code == errMsg.SUCCESS {
+		adminID, _ := auth.GetUserIDFromContext(c)
+		a.Service.LogOperation(adminID, "", "delete", "app", "",
+			fmt.Sprintf("删除应用: %v", req.AppIDs), c.IP())
+	}
 	return re.withCode(resp.Code).Respond(resp.Apps)
 }
 
-// AppInfo 获取单个app详细信息
 func (a *AdminController) AppInfo(c *fiber.Ctx) error {
 	var req struct {
 		AppID string `json:"appid"`

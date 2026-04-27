@@ -13,6 +13,9 @@ func BindDao() {
 		new(License),
 		new(User),
 		new(Agent),
+		new(SystemConfig),
+		new(OperationLog),
+		new(Announcement),
 	)
 	if err != nil {
 		panic(err)

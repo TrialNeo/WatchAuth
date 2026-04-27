@@ -148,6 +148,16 @@ func (*UserService) RevokeLicense(userID uint, licenseID uint) uint {
 	return errMsg.SUCCESS
 }
 
+func (*UserService) GetActiveAnnouncements() ([]AnnouncementItem, uint) {
+	var list []dao.Announcement
+	global.DataBase.Where("status = 0").Order("id desc").Find(&list)
+	items := make([]AnnouncementItem, 0, len(list))
+	for _, a := range list {
+		items = append(items, announcementToItem(a))
+	}
+	return items, errMsg.SUCCESS
+}
+
 func (*UserService) GetProfile(userID uint) (*dao.User, uint) {
 	var user dao.User
 	if err := global.DataBase.First(&user, userID).Error; err != nil {

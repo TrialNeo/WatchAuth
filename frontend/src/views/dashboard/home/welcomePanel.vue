@@ -1,6 +1,5 @@
 <template>
   <BaseCard>
-    <!-- 欢迎面板 -->
     <el-scrollbar :max-height="620">
       <div class="flex flex-col xl:flex-row justify-between p-6 lg:p-8">
         <div class="flex-1">
@@ -27,102 +26,52 @@
                 :text="`“ ${userStore.userInfo?.bio} ”`"
                 class="text-(--el-text-color-regular) italic text-sm md:base cursor-pointer"
               />
-              <div class="flex flex-wrap justify-center lg:justify-start items-center gap-3">
-                <div
-                  class="flex items-center gap-2 text-xs font-semibold px-3 py-2 text-(--el-text-color-primary) bg-(--el-bg-color-page) rounded-lg"
-                >
-                  <el-icon>
-                    <component
-                      :is="menuStore.iconComponents['Element:Orange']"
-                      class="text-orange-500"
-                    />
-                  </el-icon>
-                  <span>晴 22℃</span>
-                </div>
-                <div
-                  class="flex items-center gap-2 text-xs font-semibold px-3 py-2 text-(--el-text-color-primary) bg-(--el-bg-color-page) rounded-lg"
-                >
-                  <el-icon>
-                    <component
-                      :is="menuStore.iconComponents['Element:Monitor']"
-                      class="text-indigo-500"
-                    />
-                  </el-icon>
-                  <span
-                    >{{ userStore.address.country }} · {{ userStore.address.region }} ·
-                    {{ userStore.address.city }}</span
-                  >
-                </div>
-                <div
-                  class="flex items-center gap-2 text-xs font-semibold px-3 py-2 text-(--el-text-color-primary) bg-(--el-bg-color-page) rounded-lg"
-                >
-                  <el-icon>
-                    <component
-                      :is="menuStore.iconComponents['Element:Calendar']"
-                      class="text-emerald-500"
-                    />
-                  </el-icon>
-                  <span>{{ currentDate }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="flex-1 flex justify-center lg:justify-end xl:justify-center">
-              <LottieAnimation
-                :animationData="workTimeLottie"
-                :height="140"
-                :width="180"
-                class="hidden lg:block"
-              />
             </div>
           </div>
-          <div
-            class="flex flex-col md:flex-row px-2 md:px-6 py-6 md:py-10 items-center gap-6 md:gap-0"
-          >
-            <div class="flex w-full md:flex-1 flex-col gap-2">
-              <div class="text-xs font-semibold text-(--el-text-color-secondary)">今日任务进度</div>
-              <div class="flex items-center gap-2">
-                <div class="flex items-center gap-2 shrink-0">
-                  <span class="text-xl font-extrabold text-(--el-color-primary)">12</span>
-                  <span class="text-sm font-semibold text-(--el-text-color-secondary)">/ 16</span>
+
+          <!-- 公告栏 -->
+          <div v-if="announcements.length > 0" class="mt-6 px-2 md:px-6">
+            <div class="flex items-center gap-2 mb-3">
+              <el-icon class="text-orange-500" size="18"><component :is="menuStore.iconComponents['HOutline:MegaphoneIcon']" /></el-icon>
+              <span class="text-sm font-semibold text-(--el-text-color-primary)">系统公告</span>
+            </div>
+            <div class="flex flex-col gap-2">
+              <div
+                v-for="item in announcements.slice(0, 3)"
+                :key="item.id"
+                class="flex items-start gap-2 p-2 rounded-lg bg-(--el-fill-color-lighter) cursor-pointer hover:bg-(--el-fill-color-light)"
+              >
+                <span class="text-xs font-bold text-(--el-color-primary) shrink-0 mt-0.5">[公告]</span>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-semibold truncate">{{ item.title }}</div>
+                  <div class="text-xs text-(--el-text-color-secondary) mt-0.5 truncate">{{ item.content }}</div>
                 </div>
-                <el-progress :percentage="75" :stroke-width="8" class="flex-1" />
+                <span class="text-xs text-(--el-text-color-secondary) shrink-0">{{ item.createdAt?.slice(0, 10) }}</span>
               </div>
             </div>
-            <div class="hidden md:block mx-7">
-              <el-divider direction="vertical" />
-            </div>
+          </div>
+
+          <!-- 今日概览 -->
+          <div class="flex flex-col md:flex-row px-2 md:px-6 py-6 md:py-10 items-center gap-6 md:gap-0">
             <div class="flex w-full md:flex-1 flex-col gap-2">
-              <div class="text-xs font-semibold text-(--el-text-color-secondary)">待处理审批</div>
+              <div class="text-xs font-semibold text-(--el-text-color-secondary)">今日新增机器</div>
               <div class="flex items-center gap-2">
-                <div class="flex items-center gap-2 shrink-0">
-                  <span class="text-xl font-extrabold text-(--el-color-primary)">4</span>
-                  <span class="text-sm font-semibold text-(--el-text-color-secondary)">个任务</span>
-                </div>
-                <div class="flex items-center">
-                  <el-avatar
-                    :size="20"
-                    class="border-2 rounded-full shadow-xl"
-                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=1"
-                  />
-                  <el-avatar
-                    :size="20"
-                    class="border-2 rounded-full shadow-xl -ml-2"
-                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=2"
-                  />
-                  <span class="text-xs ml-1 font-semibold text-(--el-text-color-secondary)"
-                    >+2</span
-                  >
-                </div>
+                <span class="text-xl font-extrabold text-(--el-color-primary)">{{ todayStats?.newMachines ?? '-' }}</span>
               </div>
             </div>
-            <div class="hidden md:block mx-7">
-              <el-divider direction="vertical" />
-            </div>
+            <div class="hidden md:block mx-7"><el-divider direction="vertical" /></div>
             <div class="flex w-full md:flex-1 flex-col gap-2">
-              <div class="text-xs font-semibold text-(--el-text-color-secondary)">团队活跃度</div>
+              <div class="text-xs font-semibold text-(--el-text-color-secondary)">今日新发授权</div>
               <div class="flex items-center gap-2">
-                <div class="text-xl font-extrabold text-(--el-color-primary)">98%</div>
-                <BaseTag text="High" type="success" />
+                <span class="text-xl font-extrabold text-(--el-color-primary)">{{ todayStats?.newLicenses ?? '-' }}</span>
+              </div>
+            </div>
+            <div class="hidden md:block mx-7"><el-divider direction="vertical" /></div>
+            <div class="flex w-full md:flex-1 flex-col gap-2">
+              <div class="text-xs font-semibold text-(--el-text-color-secondary)">当前在线</div>
+              <div class="flex items-center gap-2">
+                <span class="text-xl font-extrabold text-(--el-color-primary)">{{ todayStats?.onlineCount ?? '-' }}</span>
+                <BaseTag text="Live" type="success" />
               </div>
             </div>
           </div>
@@ -147,120 +96,70 @@
               </el-icon>
             </div>
             <div>
-              <div class="text-[13px] font-semibold text-(--el-text-color-secondary) mb-1">
-                {{ item.label }}
-              </div>
+              <div class="text-[13px] font-semibold text-(--el-text-color-secondary) mb-1">{{ item.label }}</div>
               <div class="flex items-baseline gap-2">
-                <span class="text-[20px] font-extrabold text-(--el-text-color-primary)">{{
-                  item.value
-                }}</span>
-                <BaseTag
-                  :text="item.trend"
-                  :type="item.trendType === 'up' ? 'success' : 'danger'"
-                />
+                <span class="text-[20px] font-extrabold text-(--el-text-color-primary)">{{ item.value }}</span>
               </div>
-            </div>
-            <div class="w-20 h-10 opacity-60 absolute -bottom-1 -right-1">
-              <VChart :option="item.chartOption" autoresize class="w-full h-full" />
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- 最近操作 -->
+      <div class="px-6 pb-6" v-if="recentLogs.length > 0">
+        <div class="flex items-center gap-2 mb-3">
+          <el-icon class="text-indigo-500" size="18"><component :is="menuStore.iconComponents['HOutline:ClipboardDocumentListIcon']" /></el-icon>
+          <span class="text-sm font-semibold text-(--el-text-color-primary)">最近操作</span>
+        </div>
+        <el-table :data="recentLogs" :border="false" size="small" show-overflow-tooltip>
+          <el-table-column label="操作" min-width="100" prop="action" />
+          <el-table-column label="目标" min-width="100" prop="target" />
+          <el-table-column label="详情" min-width="200" prop="detail" show-overflow-tooltip />
+          <el-table-column label="时间" min-width="140" prop="createdAt" />
+        </el-table>
       </div>
     </el-scrollbar>
   </BaseCard>
 </template>
 
 <script lang="ts" setup>
-import dayjs from 'dayjs'
 import VChart from 'vue-echarts'
 import LottieAnimation from '@/components/animation/LottieAnimation.vue'
 import workTimeLottie from '@/assets/lotties/welcome.json'
+import { getTodayStats, getRecentLogs, type TodayStats, type OperationLogItem } from '@/api/operationLog'
+import { getActiveAnnouncements, type AnnouncementItem } from '@/api/announcement'
+import { ElMessage } from 'element-plus'
 
 const userStore = useUserStore()
 const menuStore = useMenuStore()
 
-// 当前日期
-const currentDate = ref('')
+const todayStats = ref<TodayStats | null>(null)
+const recentLogs = ref<OperationLogItem[]>([])
+const announcements = ref<AnnouncementItem[]>([])
 
-// 创建小折线图
-const createMiniLineChart = (data: number[], color: string) => {
-  return {
-    grid: { left: 0, right: 0, top: 10, bottom: 0 },
-    xAxis: { type: 'category', show: false },
-    yAxis: { type: 'value', show: false },
-    series: [
-      {
-        data,
-        type: 'line',
-        smooth: true,
-        symbol: 'none',
-        lineStyle: { color, width: 2 },
-        areaStyle: {
-          color: {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [
-              { offset: 0, color: color + '30' },
-              { offset: 1, color: 'transparent' },
-            ],
-          },
-        },
-      },
-    ],
-  }
-}
-
-// 核心指标小卡片数据
 const statCards = computed(() => [
-  {
-    label: '本周任务完成',
-    value: '52',
-    trend: '+12%',
-    trendType: 'up',
-    color: '#6366f1',
-    icon: 'HOutline:CheckCircleIcon',
-    chartOption: createMiniLineChart([30, 40, 35, 50, 49, 60, 52], '#6366f1'),
-  },
-  {
-    label: '项目活跃度',
-    value: '84%',
-    trend: '+5%',
-    trendType: 'up',
-    color: '#10b981',
-    icon: 'HOutline:ArrowTrendingUpIcon',
-    chartOption: createMiniLineChart([70, 75, 72, 80, 78, 85, 84], '#10b981'),
-  },
-  {
-    label: '待办处理率',
-    value: '92%',
-    trend: '-2%',
-    trendType: 'down',
-    color: '#f59e0b',
-    icon: 'HOutline:ClipboardDocumentListIcon',
-    chartOption: createMiniLineChart([95, 94, 96, 92, 93, 91, 92], '#f59e0b'),
-  },
-  {
-    label: '团队协作值',
-    value: '76',
-    trend: '+18%',
-    trendType: 'up',
-    color: '#ef4444',
-    icon: 'HOutline:UserGroupIcon',
-    chartOption: createMiniLineChart([50, 55, 60, 65, 70, 75, 76], '#ef4444'),
-  },
+  { label: '今日新增用户', value: todayStats.value?.newUsers ?? '-', color: '#6366f1', icon: 'HOutline:UserPlusIcon' },
+  { label: '新增授权', value: todayStats.value?.newLicenses ?? '-', color: '#10b981', icon: 'HOutline:KeyIcon' },
+  { label: '代理总数', value: todayStats.value?.totalAgents ?? '-', color: '#f59e0b', icon: 'HOutline:UserGroupIcon' },
+  { label: '在线机器', value: todayStats.value?.onlineCount ?? '-', color: '#ef4444', icon: 'HOutline:SignalIcon' },
 ])
 
-// 获取当前日期
-const getCurrentDate = () => {
-  currentDate.value = dayjs().format('YYYY-MM-DD')
+const fetchData = async () => {
+  const [statsRes, logsRes, annRes] = await Promise.all([
+    getTodayStats(),
+    getRecentLogs(),
+    getActiveAnnouncements(),
+  ])
+
+  if (statsRes.data.code === 0) todayStats.value = statsRes.data.data
+  else ElMessage.error(statsRes.data.msg || '获取今日统计失败')
+
+  if (logsRes.data.code === 0) recentLogs.value = logsRes.data.data?.list ?? []
+
+  if (annRes.data.code === 0) announcements.value = annRes.data.data?.list ?? []
 }
 
-onMounted(() => {
-  getCurrentDate()
-})
+onMounted(fetchData)
 </script>
 
 <style lang="scss" scoped>

@@ -36,6 +36,16 @@ const (
 	ERRORAgentHasChildren    = 50004
 )
 
+// system_config模块
+const (
+	ERRORConfigNotFound = 60000
+)
+
+// announcement模块
+const (
+	ERRORAnnouncementNotFound = 70000
+)
+
 var codeMsg = map[uint]string{
 	ERROR:              "服务器内部错误",
 	ERRORInvalidParams: "非法参数",
@@ -55,6 +65,9 @@ var codeMsg = map[uint]string{
 	ERRORAgentParentFrozen:   "上级代理已冻结",
 	ERRORAgentLevelLimit:     "代理层级已达上限(最多3级)",
 	ERRORAgentHasChildren:    "该代理下存在子代理，无法删除",
+
+	ERRORConfigNotFound:        "配置项不存在",
+	ERRORAnnouncementNotFound:  "公告不存在",
 }
 
 func GetErrMsg(code uint) string {

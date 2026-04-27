@@ -24,6 +24,10 @@ func (a *AdminController) Login(c *fiber.Ctx) error {
 		return re.withCode(errMsg.ERRORInvalidParams).Respond(nil)
 	}
 	resp := a.Service.Login(req.Username, req.Password, c.IP())
+	if resp.Code == errMsg.SUCCESS {
+		a.Service.LogOperation(0, req.Username, "login", "admin", "",
+			"管理员登录", c.IP())
+	}
 	return re.withCode(resp.Code).Respond(resp)
 }
 

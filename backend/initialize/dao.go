@@ -3,6 +3,7 @@ package initialize
 import (
 	"Diggpher/global"
 	"Diggpher/internal/dao"
+	"Diggpher/internal/service"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -26,4 +27,5 @@ func ConnectDB() {
 	}
 	global.DataBase = DataBase
 	dao.BindDao()
+	service.InitSystemConfigs()
 }

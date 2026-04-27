@@ -47,6 +47,24 @@ export const staticRoutes = [
         meta: { title: '代理管理', icon: 'HOutline:UserGroupIcon', keepAlive: true },
       },
       {
+        path: '/system-config',
+        name: 'SystemConfigView',
+        component: () => import('@/views/systemConfig/index.vue'),
+        meta: { title: '系统配置', icon: 'HOutline:Cog6ToothIcon', keepAlive: true },
+      },
+      {
+        path: '/operation-log',
+        name: 'OperationLogView',
+        component: () => import('@/views/operationLog/index.vue'),
+        meta: { title: '操作日志', icon: 'HOutline:ClipboardDocumentListIcon', keepAlive: true },
+      },
+      {
+        path: '/announcement',
+        name: 'AnnouncementView',
+        component: () => import('@/views/announcement/index.vue'),
+        meta: { title: '公告管理', icon: 'HOutline:MegaphoneIcon', keepAlive: true },
+      },
+      {
         path: '/exception/403',
         name: '403',
         component: () => import('@/views/exception/403/index.vue'),

@@ -3,10 +3,10 @@ package controller
 import (
 	"Diggpher/internal/service"
 	"Diggpher/internal/service/errMsg"
+	"Diggpher/pkg/middleware/auth"
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetAppNameList 获取现有app名称列表
 func (a *AdminController) GetAppNameList(c *fiber.Ctx) error {
 	re := newRespondIMP(c)
 	resp := a.Service.GetAppNameList()
@@ -46,5 +46,10 @@ func (a *AdminController) NewVer(c *fiber.Ctx) error {
 		return re.withCode(errMsg.ERRORInvalidParams).Respond(nil)
 	}
 	resp := a.Service.NewVer(req.Appid, req.Version, req.Desc, req.Sign, req.PatchUrl, req.ForceUpdate, req.Status)
+	if resp.Code == errMsg.SUCCESS {
+		adminID, _ := auth.GetUserIDFromContext(c)
+		a.Service.LogOperation(adminID, "", "create", "version", req.Appid,
+			"创建版本: "+req.Appid+" v"+req.Version, c.IP())
+	}
 	return re.withCode(resp.Code).Respond(nil)
 }
